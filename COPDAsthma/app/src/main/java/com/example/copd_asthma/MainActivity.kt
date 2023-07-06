@@ -6,17 +6,21 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,10 +42,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
+import com.parse.Parse
+import com.parse.ParseObject
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             COPDAsthmaTheme {
                 // A surface container using the 'background' color from the theme
@@ -234,6 +243,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
             maxLines = 1,
             label = {Text("Age")}
         )
@@ -243,6 +254,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
             maxLines = 1,
             label = {Text("Cigarette Pack History")}
         )
@@ -253,6 +266,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
             maxLines = 1,
             label = {Text("FEV 1")}
         )
@@ -262,6 +277,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
             maxLines = 1,
             label = {Text("FVC")}
         )
@@ -271,6 +288,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
             maxLines = 1,
             label = {Text("MWT 1")}
         )
@@ -280,6 +299,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
             maxLines = 1,
             label = {Text("MWT2")}
         )
@@ -289,9 +310,159 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
             maxLines = 1,
             label = {Text("MWT Best")}
+
+
         )
+        Text(
+            text = "Enter Your COPD Severity:",
+            modifier
+                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                .fillMaxWidth(),
+            fontSize = 21.sp,
+            textAlign = TextAlign.Left
+        )
+        val radioOptions = listOf("Mild", "Moderate", "Severe","Very Severe")
+        val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
+        Column {
+            radioOptions.forEach { text ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (text == selectedOption),
+                            onClick = {
+                                onOptionSelected(text)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                        .padding(vertical = 5.dp)
+                ) {
+                    RadioButton(
+                        selected = (text == selectedOption),
+                        onClick = { onOptionSelected(text) }
+                    )
+                    Text(
+                        text = text,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+        }
+
+        Text(
+            text = "Enter Your Gender:",
+            modifier
+                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                .fillMaxWidth(),
+            fontSize = 21.sp,
+            textAlign = TextAlign.Left
+        )
+
+        val gender = listOf("Male","Female")
+        val (selected, onOptionSelect) = remember { mutableStateOf(gender[1] ) }
+        Column {
+            gender.forEach { text ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (text == selected),
+                            onClick = {
+                                onOptionSelect(text)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    RadioButton(
+                        selected = (text == selected),
+                        onClick = { onOptionSelect(text) }
+                    )
+                    Text(
+                        text = text,
+
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+        }
+
+        Text(
+            text = "Do you have Diabetes?:",
+            modifier
+                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                .fillMaxWidth(),
+            fontSize = 21.sp,
+            textAlign = TextAlign.Left
+        )
+
+        val diabetes = listOf("Yes","No")
+        val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf(diabetes[1] ) }
+        Column {
+            diabetes.forEach { text ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (text == selected),
+                            onClick = {
+                                onDiabetesSelect(text)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    RadioButton(
+                        selected = (text == selected),
+                        onClick = { onDiabetesSelect(text) }
+                    )
+                    Text(
+                        text = text,
+
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+        }
+        Text(
+            text = "Do you have Hypertension?:",
+            modifier
+                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                .fillMaxWidth(),
+            fontSize = 21.sp,
+            textAlign = TextAlign.Left
+        )
+
+        val hypertention = listOf("Yes","No")
+        val (hyperSelect, onHyperSelect) = remember { mutableStateOf(hypertention[1] ) }
+        Column {
+            hypertention.forEach { text ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (text == selected),
+                            onClick = {
+                                onHyperSelect(text)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    RadioButton(
+                        selected = (text == selected),
+                        onClick = { onHyperSelect(text) }
+                    )
+                    Text(
+                        text = text,
+
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+        }
+
 
 
 
