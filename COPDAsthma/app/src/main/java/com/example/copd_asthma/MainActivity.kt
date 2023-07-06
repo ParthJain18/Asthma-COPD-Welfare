@@ -1,6 +1,7 @@
 package com.example.copd_asthma
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -49,6 +50,13 @@ import com.parse.ParseObject
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Parse.initialize(
+            Parse.Configuration.Builder(this)
+                .applicationId(getString(R.string.back4app_app_id))
+                .clientKey(getString(R.string.back4app_client_key))
+                .server(getString(R.string.back4app_server_url))
+                .build());
 
         setContent {
             COPDAsthmaTheme {
@@ -362,7 +370,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             textAlign = TextAlign.Left
         )
 
-        val gender = listOf("Male","Female")
+        val gender = listOf("Male","Female", "other")
         val (selected, onOptionSelect) = remember { mutableStateOf(gender[1] ) }
         Column {
             gender.forEach { text ->
