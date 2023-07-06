@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">COPD-Asthma</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <string name="back4app_app_id">OhUslS33QNcs6n0yONwhBSU0CYDG1qMvqiA9nJBD</string>
+    <string name="back4app_client_key">r1dmgRQQR30kanVgahMgbhH4Ra2g422Df0iG4fCm</string>
 </resources>
