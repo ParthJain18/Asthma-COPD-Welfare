@@ -47,6 +47,7 @@ fun saveToDB(userObj: Users) {
     user.put("email", userObj.email)
     user.put("age", userObj.age)
     user.put("age", userObj.age)
+    user.put("gender", userObj.gender)
     user.put("packHistory", userObj.packHistory)
     user.put("fev1", userObj.fev1)
     user.put("fvc", userObj.fvc)
