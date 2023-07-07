@@ -8,9 +8,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -51,13 +53,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Parse.initialize(
-            Parse.Configuration.Builder(this)
-                .applicationId(getString(R.string.back4app_app_id))
-                .clientKey(getString(R.string.back4app_client_key))
-                .server(getString(R.string.back4app_server_url))
-                .build());
-
         setContent {
             COPDAsthmaTheme {
                 // A surface container using the 'background' color from the theme
@@ -65,7 +60,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyApp()
+                    AppNavigator()
                 }
             }
         }
@@ -73,7 +68,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp() {
+fun AppNavigator() {
     val navController = rememberNavController()
 
     NavHost(navController, startDestination = "StartScreen") {
@@ -103,7 +98,8 @@ fun StartScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
 
     Column(
 
-        modifier.padding(all = 10.dp)
+        modifier
+            .padding(all = 10.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -149,7 +145,9 @@ fun StartScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
 
         Button(
             onClick = onLogIn,
-            modifier.padding(top = 30.dp).width(200.dp),
+            modifier
+                .padding(top = 30.dp)
+                .width(200.dp),
             colors = ButtonDefaults.buttonColors(Color(80, 160, 96))
         ) {
             Text(text = "Log In",
@@ -176,7 +174,9 @@ fun StartScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
 
         Button(
             onClick = onSignUp,
-            modifier.padding(top = 30.dp).width(200.dp),
+            modifier
+                .padding(top = 30.dp)
+                .width(200.dp),
             colors = ButtonDefaults.buttonColors(Color(80, 160, 96))
         ) {
             Text(text = "Sign up",
@@ -198,294 +198,301 @@ fun StartScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
 fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
 
     var userName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var userPass by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
+    var userAge by remember { mutableStateOf("") }
     var packHistory by remember { mutableStateOf("") }
     var fev1 by remember { mutableStateOf("") }
     var fvc by remember { mutableStateOf("") }
     var mwt1 by remember { mutableStateOf("") }
     var mwt2 by remember { mutableStateOf("") }
-    var mwtBest by remember { mutableStateOf("") }
-
-
-    Column(
-
-        modifier.padding(all = 10.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
-
-        ) {
+    var userGender by remember { mutableStateOf("") }
+    var userDiabetes by remember { mutableStateOf("") }
+    var userHypertension by remember { mutableStateOf("") }
 
 
 
-        Text(
-            text = "Please Enter Your Spirometry Results:",
-            modifier
-                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                .fillMaxWidth(),
-            fontSize = 21.sp,
-            textAlign = TextAlign.Center
-        )
-        TextField(
-            value = userName,
-            onValueChange = { userName = it },
+    Surface(
+        modifier = Modifier.padding(5.dp)
+    ) {
+
+        Column(
+
             modifier
                 .padding(all = 10.dp)
-                .fillMaxWidth(),
-            maxLines = 1,
-            label = {Text("User Name")}
-        )
-        TextField(
-            value = userPass,
-            onValueChange = { userPass = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            maxLines = 1,
-            label = {Text("Password")}
-        )
-        TextField(
-            value = age,
-            onValueChange = { age = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
 
-            maxLines = 1,
-            label = {Text("Age")}
-        )
-        TextField(
-            value = packHistory,
-            onValueChange = { packHistory = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-            maxLines = 1,
-            label = {Text("Cigarette Pack History")}
-        )
-
-        TextField(
-            value = fev1,
-            onValueChange = { fev1 = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-            maxLines = 1,
-            label = {Text("FEV 1")}
-        )
-        TextField(
-            value = fvc,
-            onValueChange = { fvc = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-            maxLines = 1,
-            label = {Text("FVC")}
-        )
-        TextField(
-            value = mwt1,
-            onValueChange = { mwt1 = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-            maxLines = 1,
-            label = {Text("MWT 1")}
-        )
-        TextField(
-            value = mwt2,
-            onValueChange = { mwt2 = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-            maxLines = 1,
-            label = {Text("MWT2")}
-        )
-        TextField(
-            value = mwtBest,
-            onValueChange = { mwtBest = it },
-            modifier
-                .padding(all = 10.dp)
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-            maxLines = 1,
-            label = {Text("MWT Best")}
+            ) {
 
 
-        )
-        Text(
-            text = "Enter Your COPD Severity:",
-            modifier
-                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                .fillMaxWidth(),
-            fontSize = 21.sp,
-            textAlign = TextAlign.Left
-        )
-        val radioOptions = listOf("Mild", "Moderate", "Severe","Very Severe")
-        val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
-        Column {
-            radioOptions.forEach { text ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = (text == selectedOption),
-                            onClick = {
-                                onOptionSelected(text)
-                            }
-                        )
-                        .padding(horizontal = 16.dp)
-                        .padding(vertical = 5.dp)
-                ) {
-                    RadioButton(
-                        selected = (text == selectedOption),
-                        onClick = { onOptionSelected(text) }
-                    )
-                    Text(
-                        text = text,
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
-                }
-            }
-        }
 
-        Text(
-            text = "Enter Your Gender:",
-            modifier
-                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                .fillMaxWidth(),
-            fontSize = 21.sp,
-            textAlign = TextAlign.Left
-        )
+            Text(
+                text = "Please Enter Your Spirometry Results:",
+                modifier
+                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                    .fillMaxWidth(),
+                fontSize = 21.sp,
+                textAlign = TextAlign.Left
+            )
+            Spacer(
+                modifier.heightIn(50.dp)
+            )
+            TextField(
+                value = userName,
+                onValueChange = { userName = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                maxLines = 1,
+                label = {Text("Full Name")}
+            )
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                maxLines = 1,
+                label = {Text("E-mail")}
+            )
+            TextField(
+                value = userPass,
+                onValueChange = { userPass = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                maxLines = 1,
+                label = {Text("Password")}
+            )
+            TextField(
+                value = userAge,
+                onValueChange = { userAge = it },
 
-        val gender = listOf("Male","Female", "other")
-        val (selected, onOptionSelect) = remember { mutableStateOf(gender[1] ) }
-        Column {
-            gender.forEach { text ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .selectable(
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                maxLines = 1,
+                label = {Text("Age")}
+            )
+            Text(
+                text = "Enter Your Gender:",
+                modifier
+                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                    .fillMaxWidth(),
+                fontSize = 21.sp,
+                textAlign = TextAlign.Left
+            )
+
+            val gender = listOf("Male","Female", "other")
+            val (selected, onOptionSelect) = remember { mutableStateOf(gender[1] ) }
+            Column {
+                gender.forEach { text ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = (text == selected),
+                                onClick = {
+                                    onOptionSelect(text)
+                                }
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+
+                    ) {
+                        RadioButton(
                             selected = (text == selected),
                             onClick = {
                                 onOptionSelect(text)
+                                userGender = text
                             }
                         )
-                        .padding(horizontal = 16.dp)
-                ) {
-                    RadioButton(
-                        selected = (text == selected),
-                        onClick = { onOptionSelect(text) }
-                    )
-                    Text(
-                        text = text,
+                        Text(
+                            text = text,
 
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
                 }
             }
-        }
+            Text(
+                text = "Do you have Diabetes?:",
+                modifier
+                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                    .fillMaxWidth(),
+                fontSize = 21.sp,
+                textAlign = TextAlign.Left
+            )
 
-        Text(
-            text = "Do you have Diabetes?:",
-            modifier
-                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                .fillMaxWidth(),
-            fontSize = 21.sp,
-            textAlign = TextAlign.Left
-        )
+            val diabetes = listOf("Yes","No")
+            val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf(diabetes[1] ) }
+            Column {
+                diabetes.forEach { text ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = (text == diabetesSelect),
+                                onClick = {
+                                    onDiabetesSelect(text)
+                                }
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
 
-        val diabetes = listOf("Yes","No")
-        val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf(diabetes[1] ) }
-        Column {
-            diabetes.forEach { text ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = (text == selected),
-                            onClick = {
-                                onDiabetesSelect(text)
+                    ) {
+                        RadioButton(
+                            selected = (text == diabetesSelect),
+                            onClick = { onDiabetesSelect(text)
+                                userDiabetes = text
+
                             }
                         )
-                        .padding(horizontal = 16.dp)
-                ) {
-                    RadioButton(
-                        selected = (text == selected),
-                        onClick = { onDiabetesSelect(text) }
-                    )
-                    Text(
-                        text = text,
+                        Text(
+                            text = text,
 
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
                 }
             }
-        }
-        Text(
-            text = "Do you have Hypertension?:",
-            modifier
-                .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                .fillMaxWidth(),
-            fontSize = 21.sp,
-            textAlign = TextAlign.Left
-        )
+            Text(
+                text = "Do you have Hypertension?:",
+                modifier
+                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                    .fillMaxWidth(),
+                fontSize = 21.sp,
+                textAlign = TextAlign.Left
+            )
 
-        val hypertention = listOf("Yes","No")
-        val (hyperSelect, onHyperSelect) = remember { mutableStateOf(hypertention[1] ) }
-        Column {
-            hypertention.forEach { text ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = (text == selected),
+            val hypertention = listOf("Yes","No")
+            val (hyperSelect, onHyperSelect) = remember { mutableStateOf(hypertention[1] ) }
+            Column {
+                hypertention.forEach { text ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .selectable(
+                                selected = (text == hyperSelect),
+                                onClick = {
+                                    onHyperSelect(text)
+                                }
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+
+
+                    ) {
+                        RadioButton(
+                            selected = (text == hyperSelect),
                             onClick = {
                                 onHyperSelect(text)
+                                userHypertension = text
+
                             }
                         )
-                        .padding(horizontal = 16.dp)
-                ) {
-                    RadioButton(
-                        selected = (text == selected),
-                        onClick = { onHyperSelect(text) }
-                    )
-                    Text(
-                        text = text,
+                        Text(
+                            text = text,
 
-                        modifier = Modifier.padding(start = 16.dp)
-                    )
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
                 }
             }
-        }
 
 
+            TextField(
+                value = packHistory,
+                onValueChange = { packHistory = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
 
-
-        Button(
-            onClick = onNavigate,
-            modifier.padding(top = 30.dp).width(200.dp),
-            colors = ButtonDefaults.buttonColors(Color(80, 160, 96))
-        ) {
-            Text(text = "Sign up",
-                modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                fontSize = 20.sp
+                maxLines = 1,
+                label = {Text("Cigarette Pack History")}
             )
+
+            TextField(
+                value = fev1,
+                onValueChange = { fev1 = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
+                maxLines = 1,
+                label = {Text("FEV 1")}
+            )
+            TextField(
+                value = fvc,
+                onValueChange = { fvc = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
+                maxLines = 1,
+                label = {Text("FVC")}
+            )
+            TextField(
+                value = mwt1,
+                onValueChange = { mwt1 = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
+                maxLines = 1,
+                label = {Text("MWT 1")}
+            )
+            TextField(
+                value = mwt2,
+                onValueChange = { mwt2 = it },
+                modifier
+                    .padding(all = 10.dp)
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+
+                maxLines = 1,
+                label = {Text("MWT 2")}
+            )
+
+            Button(
+                onClick = {
+                    val user = Users(
+                        userName,
+                        email,
+                        userPass ,
+                        age = userAge.toInt(),
+                        packHistory = packHistory.toInt(),
+                        fev1 = fev1.toInt(),
+                        fvc = fvc.toInt(),
+                        mwt1 = mwt1.toInt(),
+                        mwt2 = mwt2.toInt(),
+                        gender = userGender,
+                        diabetes = userDiabetes,
+                        hypertension = userHypertension
+                        )
+                    saveToDB(user)
+                    onNavigate()
+                          },
+                modifier
+                    .padding(top = 30.dp)
+                    .width(200.dp),
+                colors = ButtonDefaults.buttonColors(Color(80, 160, 96))
+            ) {
+                Text(text = "Sign up",
+                    modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                    fontSize = 20.sp
+                )
+            }
+
+
         }
-
-
     }
 
 }
@@ -494,6 +501,11 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
 fun HomeScreen() {
     Text ("In Progress")
 }
+
+
+
+
+
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
