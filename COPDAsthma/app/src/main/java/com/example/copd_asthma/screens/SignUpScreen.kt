@@ -27,12 +27,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.Users
-import com.example.copd_asthma.saveToDB
+import com.example.copd_asthma.signUp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +51,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
     var userGender by remember { mutableStateOf("") }
     var userDiabetes by remember { mutableStateOf("") }
     var userHypertension by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
 
 
@@ -318,7 +321,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                         diabetes = userDiabetes,
                         hypertension = userHypertension
                     )
-                    saveToDB(user)
+                    signUp(user, context)
                     onNavigate()
                 },
                 modifier

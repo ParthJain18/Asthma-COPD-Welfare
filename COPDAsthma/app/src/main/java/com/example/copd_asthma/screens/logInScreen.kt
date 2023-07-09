@@ -22,11 +22,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.R
+import com.example.copd_asthma.logIn
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +37,8 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
 
     var userName by remember { mutableStateOf("") }
     var userPass by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
 
 
@@ -74,7 +78,7 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
             maxLines = 1,
-            label = { Text("User Name") }
+            label = { Text("Email") }
         )
         TextField(
             value = userPass,
@@ -87,7 +91,9 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
         )
 
         Button(
-            onClick = onLogIn,
+            onClick = {
+                logIn(userName, userPass, context)
+                onLogIn() },
             modifier
                 .padding(top = 30.dp)
                 .width(200.dp),
