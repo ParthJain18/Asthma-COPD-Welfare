@@ -8,8 +8,6 @@ data class Users (
     val name : String,
     val email : String,
     val password : String,
-    val saltRounds: Int = 12,
-    val hashedPassword: String? = BCrypt.hashpw(password, BCrypt.gensalt(saltRounds)),
     val age: Int,
     val packHistory: Int,
     val fev1: Int,
