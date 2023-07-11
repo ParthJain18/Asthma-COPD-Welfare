@@ -30,7 +30,7 @@ data class Users (
                     return labels[i]
                 }
             }
-            return labels.last()
+            return labels.first()
     }
 }
 }
