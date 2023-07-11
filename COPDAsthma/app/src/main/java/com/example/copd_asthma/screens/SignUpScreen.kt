@@ -151,7 +151,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                             selected = (text == selected),
                             onClick = {
                                 onOptionSelect(text)
-                                userGender = text
+                                userGender = selected
                             }
                         )
                         Text(
@@ -191,7 +191,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                         RadioButton(
                             selected = (text == diabetesSelect),
                             onClick = { onDiabetesSelect(text)
-                                userDiabetes = text
+                                userDiabetes = selected
 
                             }
                         )
@@ -223,6 +223,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                                 selected = (text == hyperSelect),
                                 onClick = {
                                     onHyperSelect(text)
+                                    userHypertension = hyperSelect
                                 }
                             )
                             .padding(horizontal = 16.dp),
@@ -321,8 +322,11 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                         diabetes = userDiabetes,
                         hypertension = userHypertension
                     )
-                    signUp(user, context)
-                    onNavigate()
+                    signUp(user, context) {
+                        if (it) {
+                            onNavigate()
+                        }
+                    }
                 },
                 modifier
                     .padding(top = 30.dp)

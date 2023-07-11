@@ -3,6 +3,10 @@ package com.example.copd_asthma
 import android.app.Application
 import android.os.Bundle
 import com.parse.Parse
+import com.parse.ParseUser
+
+
+var startingScreen: String = ""
 
 class App : Application() {
     override fun onCreate() {
@@ -13,6 +17,14 @@ class App : Application() {
                 .clientKey(getString(R.string.back4app_client_key))
                 .server(getString(R.string.back4app_server_url))
                 .build()
-        );
+        )
+
+        val currentUser : ParseUser? = ParseUser.getCurrentUser()
+        startingScreen = if (currentUser == null) {
+            "StartScreen"
+        } else {
+            "HomeScreen"
+        }
+
     }
 }

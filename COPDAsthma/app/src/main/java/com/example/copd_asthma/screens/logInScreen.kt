@@ -1,5 +1,7 @@
 package com.example.copd_asthma.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.R
 import com.example.copd_asthma.logIn
+import com.parse.ParseException
+import kotlinx.coroutines.awaitAll
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,9 +95,14 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
         )
 
         Button(
+
             onClick = {
-                logIn(userName, userPass, context)
-                onLogIn() },
+                logIn(userName, userPass, context) {
+                    if (it) {
+                        onLogIn()
+                    }
+                }
+            },
             modifier
                 .padding(top = 30.dp)
                 .width(200.dp),

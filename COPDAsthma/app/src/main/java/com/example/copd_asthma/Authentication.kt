@@ -7,9 +7,8 @@ import com.parse.ParseException
 import com.parse.ParseObject
 import com.parse.ParseUser
 import com.parse.SignUpCallback
-import org.mindrot.jbcrypt.BCrypt
 
-fun signUp(userObj: Users, context: Context) {
+fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
 
     val user = ParseUser()
     user.put("name", userObj.name)
@@ -35,25 +34,31 @@ fun signUp(userObj: Users, context: Context) {
     user.signUpInBackground(
         SignUpCallback { e->
             if (e == null) {
+                Log.d("login", "done")
                 Toast.makeText(context, "Success!", Toast.LENGTH_LONG).show()
+                callback(true)
             } else {
-
+                Log.d("login", "not done")
                 ParseUser.logOut()
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                callback(false)
+
             }
         }
     )
 }
 
 
-fun logIn(uname: String, pword: String, context: Context) {
+fun logIn(uname: String, pword: String, context: Context, callback: (Boolean) ->Unit) {
 
     ParseUser.logInInBackground(uname, pword) { parseUser: ParseUser?, parseException: ParseException? ->
 
         if (parseUser != null) {
             Toast.makeText(context, "Successful Login. Welcome back $uname !", Toast.LENGTH_LONG).show()
+            callback(true)
         } else {
             ParseUser.logOut()
+            callback(false)
             if (parseException != null) {
                 Toast.makeText(context, parseException.message, Toast.LENGTH_LONG).show()
             }

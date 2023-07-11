@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavigator() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "StartScreen") {
+    NavHost(navController, startDestination = startingScreen) {
         composable("StartScreen") {
             LogInScreen(
                 onLogIn = { navController.navigate("HomeScreen") },
@@ -84,7 +84,7 @@ fun AppNavigator() {
             SignUpScreen (onNavigate = { navController.navigate("HomeScreen") } )
         }
         composable("HomeScreen") {
-            HomeScreen()
+            HomeScreen( onLogOut = {navController.navigate("StartScreen")})
         }
     }
 }
