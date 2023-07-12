@@ -55,12 +55,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(onLogOut:()-> Unit) {
-//    val currentUser = ParseUser.getCurrentUser()
-//    val name = currentUser.get("name")
-//    val sever = currentUser.get("severity")
-    val name = "Parth"
-    val sever = "Mild"
-    val fev1 = "78"
+    val currentUser = ParseUser.getCurrentUser()
+    val name = currentUser.get("name")
+    val sever = currentUser.get("severity")
+    val fev1 = currentUser.get("fev1")
+
+//    val name = "Parth"
+//    val sever = "Mild"
+//    val fev1 = "78"
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -148,7 +150,7 @@ fun HomeScreen(onLogOut:()-> Unit) {
                         NormalText("FEV 1 : $fev1")
                         Row() {
                             NormalText(text1 = "Your COPD Severity Level is:")
-                            NormalText(text1 = sever)
+                            NormalText(text1 = sever as String)
                         }
                         Spacer(modifier = Modifier.heightIn(20.dp))
                     }
