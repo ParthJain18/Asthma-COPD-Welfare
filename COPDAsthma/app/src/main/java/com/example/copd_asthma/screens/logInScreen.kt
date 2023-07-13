@@ -16,6 +16,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +59,7 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
         ) {
 
         Image(
-            painter = painterResource(id = R.drawable.logo2),
+            painter = painterResource(id = R.drawable.logo3),
             contentDescription ="header",
             modifier
                 .padding(16.dp)
@@ -82,7 +83,8 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
             maxLines = 1,
-            label = { Text("Email") }
+            label = { Text("Email") },
+            colors = TextFieldDefaults.textFieldColors(containerColor = Color(233, 250, 233))
         )
         TextField(
             value = userPass,
@@ -91,7 +93,9 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
             maxLines = 1,
-            label = { Text("Password") }
+            label = { Text("Password") },
+            colors = TextFieldDefaults.textFieldColors(containerColor = Color(233, 250, 233))
+
         )
 
         Button(
