@@ -10,8 +10,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
 const val API_KEY = "b98aaa530f0b05621e3fc6d05dec4f8e"
+var responseBody: airQuality? = null
 
-fun getData(lat: Double, lon: Double): airQuality? {
+
+fun getData(lat: Double, lon: Double, callback: (airQuality?) -> Unit) {
     val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
@@ -19,24 +21,21 @@ fun getData(lat: Double, lon: Double): airQuality? {
         .create(ApiInterface::class.java)
 
     val retrofitData = retrofit.getWeatherData(lat, lon, API_KEY)
-    var responseBody: airQuality? = null
 
     retrofitData.enqueue(object : Callback<airQuality> {
 
         override fun onResponse(call: Call<airQuality>, response: Response<airQuality>) {
             responseBody = response.body()!!
             Log.d("HTTPSuccess", responseBody!!.myList[0].components.co.toString())
+            Log.d("HTTPSuccess", responseBody!!.myList[0].main.aqi.toString())
+            callback(responseBody)
+
         }
 
         override fun onFailure(call: Call<airQuality>, t: Throwable) {
             Log.d("HTTPFail", t.toString())
+            callback(responseBody)
         }
     })
-    return if (responseBody!= null) {
-        responseBody
-    }
-    else {
-        null
-    }
 }
 

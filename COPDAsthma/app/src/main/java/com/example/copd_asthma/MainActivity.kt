@@ -41,16 +41,16 @@ fun AppNavigator() {
     val navController = rememberNavController()
 
     NavHost(navController, startDestination = startingScreen) {
-        composable("StartScreen") {
+        composable("LogInScreen") {
             LogInScreen(
                 onLogIn = { navController.navigate("HomeScreen") },
                 onSignUp = {navController.navigate("SignUpScreen")})
         }
         composable("SignUpScreen") {
-            SignUpScreen (onNavigate = { navController.navigate("HomeScreen") } )
+            SignUpScreen (onNavigate = { navController.navigate("HomeScreen") })
         }
         composable("HomeScreen") {
-            HomeScreen( onLogOut = {navController.navigate("StartScreen")})
+            HomeScreen( onLogOut = { navController.navigate("LogInScreen") })
         }
     }
 }
@@ -64,5 +64,4 @@ fun AppNavigator() {
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    SignUpScreen {}
 }

@@ -1,6 +1,12 @@
 package com.example.copd_asthma.screens
 
 
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Email
@@ -31,31 +38,41 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
 import com.example.copd_asthma.weatherApi.getData
+import com.example.copd_asthma.weatherApi.responseBody
 import com.parse.ParseUser
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onLogOut:()-> Unit) {
+fun HomeScreen(onLogOut: ()-> Unit) {
     COPDAsthmaTheme {
 
 
         val currentUser = ParseUser.getCurrentUser()
-        val name = currentUser.get("name").toString()
-        val sever = currentUser.get("severity").toString()
-        val fev1 = currentUser.get("fev1").toString()
-        val gender = currentUser.get("gender").toString()
-        val age = currentUser.get("age").toString()
+        val name = currentUser?.get("name")?.toString()
+        val sever = currentUser?.get("severity")?.toString()
+        val fev1 = currentUser?.get("fev1")?.toString()
+        val gender = currentUser?.get("gender")?.toString()
+        val age = currentUser?.get("age")?.toString()
 
 
 //
@@ -68,7 +85,19 @@ fun HomeScreen(onLogOut:()-> Unit) {
         val lat = 19.172
         val lon = 72.124
 
-        var responseObj = getData(lat, lon)
+        var showCard by remember {mutableStateOf(false)}
+        var responseObj by remember { mutableStateOf(responseBody) }
+
+
+        LaunchedEffect(responseObj) {
+            if(responseObj != null) {
+                showCard = true
+            }
+        }
+        getData(lat, lon) {
+            responseObj = it
+        }
+
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scope = rememberCoroutineScope()
@@ -101,7 +130,17 @@ fun HomeScreen(onLogOut:()-> Unit) {
                     selected = Icons.Default.ArrowDropDown == selectedItem.value,
                     onClick = {
                         scope.launch { drawerState.close() }
+                        ParseUser.logOutInBackground()
                         onLogOut()
+//                            if (it==null) {
+//                                onLogOut()
+//                                Log.d("logout", "No errors")
+//
+//                            }
+//                            else {
+//                                Log.d("logout", it.toString())
+//                            }
+//                        }
                     },
                     modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                 )
@@ -135,32 +174,6 @@ fun HomeScreen(onLogOut:()-> Unit) {
 
                         Spacer(modifier = Modifier.heightIn(15.dp))
 
-                        Card(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                            .heightIn(min = 120.dp),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-
-                        ) {
-                            HeadingText(text1 = "Hey, $name!")
-                            Card(modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
-                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary)
-
-                            ) {
-                                Spacer(modifier = Modifier.heightIn(20.dp))
-                                RowOfText("Gender:  ", gender as String)
-                                Spacer(modifier = Modifier.heightIn(7.dp))
-                                RowOfText("Age:  ", age as String)
-                                Spacer(modifier = Modifier.heightIn(7.dp))
-                                RowOfText("COPD Severity Level:  ", sever as String)
-                                Spacer(modifier = Modifier.heightIn(7.dp))
-                                RowOfText("FEV 1:  ", fev1 as String)
-                                Spacer(modifier = Modifier.heightIn(20.dp))
-
-                            }
-                        }
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -169,6 +182,7 @@ fun HomeScreen(onLogOut:()-> Unit) {
                             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
 
                         ) {
+                            HeadingText(text1 = "Hey, $name!")
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -182,26 +196,111 @@ fun HomeScreen(onLogOut:()-> Unit) {
 
                             ) {
                                 Spacer(modifier = Modifier.heightIn(20.dp))
-                                if (responseObj != null) {
-                                    RowOfText("AQI  ", responseObj.myList[0].main.aqi.toString())
+                                if (gender != null) {
+                                    RowOfText("Gender:  ", gender)
                                 }
                                 Spacer(modifier = Modifier.heightIn(7.dp))
-                                RowOfText("Age:  ", age as String)
+                                if (age != null) {
+                                    RowOfText("Age:  ", age)
+                                }
                                 Spacer(modifier = Modifier.heightIn(7.dp))
-                                RowOfText("COPD Severity Level:  ", sever as String)
+                                if (sever != null) {
+                                    RowOfText("COPD Severity Level:  ", sever)
+                                }
                                 Spacer(modifier = Modifier.heightIn(7.dp))
-                                RowOfText("FEV 1:  ", fev1 as String)
+                                if (fev1 != null) {
+                                    RowOfText("FEV 1:  ", fev1)
+                                }
                                 Spacer(modifier = Modifier.heightIn(20.dp))
 
                             }
                         }
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                                    .heightIn(min = 120.dp),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+
+                            ) {
+                                if (showCard) {
+                                    Card(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                top = 16.dp,
+                                                start = 16.dp,
+                                                end = 16.dp,
+                                                bottom = 16.dp
+                                            ),
+                                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary)
+
+                                    ) {
+
+                                        Spacer(modifier = Modifier.heightIn(20.dp))
+                                        RowOfText(
+                                            "AQI  ",
+                                            responseBody?.myList?.get(0)?.main?.aqi.toString()
+                                        )
+
+                                    }
+                                }
+                                else {
+                                    Box(modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            top = 16.dp,
+                                            start = 16.dp,
+                                            end = 16.dp,
+                                            bottom = 16.dp
+                                        )
+                                        .heightIn(100.dp)
+                                        .shimmerEffect()
+
+
+                                    ) {
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
+
     }
 )
 }
 }
+
+
+private fun Modifier.shimmerEffect(): Modifier = composed {
+    var size by remember {
+        mutableStateOf(IntSize.Zero)
+    }
+    val transition = rememberInfiniteTransition()
+    val startOffsetX by transition.animateFloat(
+        initialValue = -2 * size.width.toFloat(),
+        targetValue = 2 * size.width.toFloat(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500)
+        )
+    )
+    background(
+        brush = Brush.linearGradient(
+            colors = listOf(
+                Color(0xFFFFFFFF),
+                Color(0xFFAAAAAA),
+                Color(0xFFFFFFFF),
+            ),
+            start = Offset(startOffsetX, 0f),
+            end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
+        ),
+        shape = RoundedCornerShape(10.dp)
+    ).onGloballyPositioned {
+        size = it.size
+    }
+}
+
+
 
 
 @Preview(showBackground = true)
@@ -211,52 +310,3 @@ fun Preview1() {
 }
 
 
-//    Scaffold(
-//        modifier = Modifier,
-//        topBar =  {
-//            TopAppBar(
-//                title = {
-//                    Text(text = "Jetpack Compose")
-//                },
-//                navigationIcon = {
-//                    IconButton(onClick = { })
-//                    { Icon(imageVector = Icons.Rounded.Menu, contentDescription = "Drawer Icon") }
-//                },
-//                actions = {
-//                    IconButton(onClick = { })
-//                    {
-//                        Icon(
-//                            imageVector = Icons.Rounded.Search,
-//                            contentDescription = "",
-//                            tint = Color.White
-//                        )
-//                    }
-//                }
-//            )
-//        }
-//    ) { contentPadding ->
-//        Column() {
-//
-//            Text(text = "Hello! ",
-//                modifier = Modifier
-//                    .padding(contentPadding)
-//                .fillMaxWidth(),
-//            fontSize = 21.sp,
-//            textAlign = TextAlign.Center)
-//
-//            Button(
-//                onClick = {
-//                    ParseUser.logOutInBackground()
-//                    onLogOut()
-//                }
-//            ){
-//                Text(text = "logout")
-//            }
-//
-//        }
-//        // Screen content
-//    }
-//}
-//
-//
-//
