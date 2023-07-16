@@ -13,7 +13,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -26,9 +25,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -108,7 +107,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                     .padding(all = 10.dp)
                     .fillMaxWidth(),
                 maxLines = 1,
-                label = { Text("Password") }
+                label = { Text("Password") },
+                visualTransformation = PasswordVisualTransformation()
             )
             TextField(
                 value = userAge,
@@ -131,7 +131,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             )
 
             val gender = listOf("Male","Female", "other")
-            val (selected, onOptionSelect) = remember { mutableStateOf(gender[1] ) }
+            val (selected, onOptionSelect) = remember { mutableStateOf("") }
             Column {
                 gender.forEach { text ->
                     Row(
@@ -141,6 +141,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                                 selected = (text == selected),
                                 onClick = {
                                     onOptionSelect(text)
+                                    userGender = text
+
                                 }
                             )
                             .padding(horizontal = 16.dp),
@@ -151,12 +153,10 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                             selected = (text == selected),
                             onClick = {
                                 onOptionSelect(text)
-                                userGender = selected
                             }
                         )
                         Text(
                             text = text,
-
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
@@ -172,7 +172,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             )
 
             val diabetes = listOf("Yes","No")
-            val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf(diabetes[1] ) }
+            val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf("") }
             Column {
                 diabetes.forEach { text ->
                     Row(
@@ -182,6 +182,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                                 selected = (text == diabetesSelect),
                                 onClick = {
                                     onDiabetesSelect(text)
+                                    userDiabetes = text
+
                                 }
                             )
                             .padding(horizontal = 16.dp),
@@ -190,10 +192,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                     ) {
                         RadioButton(
                             selected = (text == diabetesSelect),
-                            onClick = { onDiabetesSelect(text)
-                                userDiabetes = selected
-
-                            }
+                            onClick = { onDiabetesSelect(text) }
                         )
                         Text(
                             text = text,
@@ -213,7 +212,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             )
 
             val hypertention = listOf("Yes","No")
-            val (hyperSelect, onHyperSelect) = remember { mutableStateOf(hypertention[1] ) }
+            val (hyperSelect, onHyperSelect) = remember { mutableStateOf("") }
             Column {
                 hypertention.forEach { text ->
                     Row(
@@ -223,7 +222,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                                 selected = (text == hyperSelect),
                                 onClick = {
                                     onHyperSelect(text)
-                                    userHypertension = hyperSelect
+                                    userHypertension = text
                                 }
                             )
                             .padding(horizontal = 16.dp),
@@ -235,13 +234,10 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                             selected = (text == hyperSelect),
                             onClick = {
                                 onHyperSelect(text)
-                                userHypertension = text
-
                             }
                         )
                         Text(
                             text = text,
-
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
@@ -330,8 +326,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 },
                 modifier
                     .padding(top = 30.dp)
-                    .width(200.dp),
-                colors = ButtonDefaults.buttonColors(Color(80, 160, 96))
+                    .width(200.dp)
             ) {
                 Text(text = "Sign up",
                     modifier.padding(horizontal = 10.dp, vertical = 5.dp),

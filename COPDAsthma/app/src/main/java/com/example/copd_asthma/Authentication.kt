@@ -4,9 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.parse.ParseException
-import com.parse.ParseObject
 import com.parse.ParseUser
-import com.parse.SignUpCallback
 
 fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
 
@@ -31,21 +29,19 @@ fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
 
 
 
-    user.signUpInBackground(
-        SignUpCallback { e->
-            if (e == null) {
-                Log.d("login", "done")
-                Toast.makeText(context, "Success!", Toast.LENGTH_LONG).show()
-                callback(true)
-            } else {
-                Log.d("login", "not done")
-                ParseUser.logOut()
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-                callback(false)
+    user.signUpInBackground { e ->
+        if (e == null) {
+            Log.d("login", "done")
+            Toast.makeText(context, "Success!", Toast.LENGTH_LONG).show()
+            callback(true)
+        } else {
+            Log.d("login", "not done")
+            ParseUser.logOut()
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            callback(false)
 
-            }
         }
-    )
+    }
 }
 
 
@@ -66,5 +62,7 @@ fun logIn(uname: String, pword: String, context: Context, callback: (Boolean) ->
 
     }
 }
+
+
 
 

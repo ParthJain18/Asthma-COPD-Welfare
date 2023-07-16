@@ -1,7 +1,6 @@
 package com.example.copd_asthma
 
 import android.app.Application
-import android.os.Bundle
 import com.parse.Parse
 import com.parse.ParseUser
 
@@ -21,7 +20,7 @@ class App : Application() {
 
         val currentUser : ParseUser? = ParseUser.getCurrentUser()
         startingScreen = if (currentUser == null) {
-            "StartScreen"
+            "LogInScreen"
         } else {
             "HomeScreen"
         }
