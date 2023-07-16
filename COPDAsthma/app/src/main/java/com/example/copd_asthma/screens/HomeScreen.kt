@@ -67,23 +67,25 @@ fun HomeScreen(onLogOut: ()-> Unit) {
     COPDAsthmaTheme {
 
 
-        val currentUser = ParseUser.getCurrentUser()
-        val name = currentUser?.get("name")?.toString()
-        val sever = currentUser?.get("severity")?.toString()
-        val fev1 = currentUser?.get("fev1")?.toString()
-        val gender = currentUser?.get("gender")?.toString()
-        val age = currentUser?.get("age")?.toString()
+//        val currentUser = ParseUser.getCurrentUser()
+//        val name = currentUser?.get("name")?.toString()
+//        val sever = currentUser?.get("severity")?.toString()
+//        val fev1 = currentUser?.get("fev1")?.toString()
+//        val gender = currentUser?.get("gender")?.toString()
+//        val age = currentUser?.get("age")?.toString()
 
 
 //
-//        val name = "Parth"
-//        val sever = "Severe"
-//        val fev1 = "78"
-//        val gender = "Male"
-//        val age = "18"
+        val name = "Parth"
+        val sever = "Severe"
+        val fev1 = "78"
+        val gender = "Male"
+        val age = "18"
 
         val lat = 19.172
         val lon = 72.124
+
+
 
         var showCard by remember {mutableStateOf(false)}
         var responseObj by remember { mutableStateOf(responseBody) }
@@ -97,6 +99,15 @@ fun HomeScreen(onLogOut: ()-> Unit) {
         getData(lat, lon) {
             responseObj = it
         }
+
+        val aqi = responseObj?.myList?.get(0)?.main?.aqi.toString()
+        val co= responseObj?.myList?.get(0)?.components?.co.toString()
+        val no2 = responseObj?.myList?.get(0)?.components?.no2.toString()
+        val o3 = responseObj?.myList?.get(0)?.components?.o3.toString()
+        val pm10 = responseObj?.myList?.get(0)?.components?.pm10.toString()
+        val pm2_5 = responseObj?.myList?.get(0)?.components?.pm2_5.toString()
+        val so2 = responseObj?.myList?.get(0)?.components?.so2.toString()
+
 
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -236,14 +247,38 @@ fun HomeScreen(onLogOut: ()-> Unit) {
                                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary)
 
                                     ) {
+                                        HeadingText("Your current AQI is: $aqi")
+                                        Card(
 
-                                        Spacer(modifier = Modifier.heightIn(20.dp))
-                                        RowOfText(
-                                            "AQI  ",
-                                            responseBody?.myList?.get(0)?.main?.aqi.toString()
-                                        )
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(
+                                                    top = 16.dp,
+                                                    start = 16.dp,
+                                                    end = 16.dp,
+                                                    bottom = 16.dp
+                                                ),
+                                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onTertiary)
 
+                                        ) {
+                                            HeadingText(text1 = "Major Air Pollutants are:")
+                                            Spacer(modifier = Modifier.heightIn(7.dp))
+                                            RowOfText("CO:  ", co )
+                                            Spacer(modifier = Modifier.heightIn(7.dp))
+                                            RowOfText("SO2:  ",so2)
+                                            Spacer(modifier = Modifier.heightIn(7.dp))
+                                            RowOfText("PM2.5:  ",pm2_5.toString() )
+                                            Spacer(modifier = Modifier.heightIn(7.dp))
+                                            RowOfText("PM10:  ", pm10.toString() )
+                                            Spacer(modifier = Modifier.heightIn(7.dp))
+                                            RowOfText("NO2:  ", no2.toString() )
+                                            Spacer(modifier = Modifier.heightIn(7.dp))
+                                            RowOfText("O3:  ", o3.toString() )
+                                            Spacer(modifier = Modifier.heightIn(20.dp))
+
+                                        }
                                     }
+
                                 }
                                 else {
                                     Box(modifier = Modifier
@@ -254,7 +289,7 @@ fun HomeScreen(onLogOut: ()-> Unit) {
                                             end = 16.dp,
                                             bottom = 16.dp
                                         )
-                                        .heightIn(100.dp)
+                                        .heightIn(120.dp)
                                         .shimmerEffect()
 
 
