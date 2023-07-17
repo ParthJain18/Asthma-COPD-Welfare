@@ -1,5 +1,6 @@
 package com.example.copd_asthma.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,10 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -56,6 +59,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
     val context = LocalContext.current
 
 
+
+
     Surface(
         modifier = Modifier.padding(5.dp)
     ) {
@@ -71,7 +76,6 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
             ) {
 
 
-
             Text(
                 text = "Please Enter Your Spirometry Results:",
                 modifier
@@ -79,7 +83,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                     .fillMaxWidth(),
                 fontSize = 21.sp,
                 textAlign = TextAlign.Left
-                        
+
             )
             Spacer(
                 modifier.heightIn(50.dp)
@@ -92,11 +96,9 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                     .fillMaxWidth(),
                 maxLines = 1,
 
-                        label = { Text("Full Name" ) }
+                label = { Text("Full Name") }
             )
-            if (userName==""){
-            Text(text = errorName, style = TextStyle(color = Color.Red))
-              }
+
 
             TextField(
                 value = email.trim(),
@@ -107,9 +109,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 maxLines = 1,
                 label = { Text("E-mail") }
             )
-            if (email==""){
-                Text(text = errorName, style = TextStyle(color = Color.Red))
-            }
+
             TextField(
                 value = userPass.trim(),
                 onValueChange = { userPass = it },
@@ -121,9 +121,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 visualTransformation = PasswordVisualTransformation()
 
             )
-            if (userPass==""){
-                Text(text = errorName, style = TextStyle(color = Color.Red))
-                }
+
             TextField(
                 value = userAge.trim(),
                 onValueChange = { userAge = it },
@@ -135,9 +133,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 maxLines = 1,
                 label = { Text("Age") }
             )
-            if (userAge==""){
-                Text(text = errorName, style = TextStyle(color = Color.Red))
-             }
+
             Text(
                 text = "Enter Your Gender:",
                 modifier
@@ -148,7 +144,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
             )
 
 
-            val gender = listOf("Male","Female", "other")
+            val gender = listOf("Male", "Female", "other")
             val (selected, onOptionSelect) = remember { mutableStateOf("") }
             Column {
                 gender.forEach { text ->
@@ -169,9 +165,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                     ) {
                         RadioButton(
                             selected = (text == selected),
-                            onClick = {
-                                onOptionSelect(text)
-                            }
+                            onClick = { onOptionSelect(text) }
                         )
                         Text(
                             text = text,
@@ -189,7 +183,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 textAlign = TextAlign.Left
             )
 
-            val diabetes = listOf("Yes","No")
+            val diabetes = listOf("Yes", "No")
             val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf("") }
             Column {
                 diabetes.forEach { text ->
@@ -233,10 +227,10 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 textAlign = TextAlign.Left
             )
 
-            val hypertention = listOf("Yes","No")
+            val hypertension = listOf("Yes", "No")
             val (hyperSelect, onHyperSelect) = remember { mutableStateOf("") }
             Column {
-                hypertention.forEach { text ->
+                hypertension.forEach { text ->
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -254,9 +248,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                     ) {
                         RadioButton(
                             selected = (text == hyperSelect),
-                            onClick = {
-                                onHyperSelect(text)
-                            }
+                            onClick = { onHyperSelect(text) }
                         )
                         Text(
                             text = text,
@@ -278,9 +270,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 maxLines = 1,
                 label = { Text("Cigarette Pack History") }
             )
-            if (packHistory==""){
-                Text(text = errorName, style = TextStyle(color = Color.Red))
-                }
+
             TextField(
                 value = fev1.trim(),
                 onValueChange = { fev1 = it },
@@ -292,9 +282,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 maxLines = 1,
                 label = { Text("FEV 1") }
             )
-            if (fev1==""){
-                Text(text = errorName, style = TextStyle(color = Color.Red))
-               }
+
             TextField(
                 value = fvc.trim(),
                 onValueChange = { fvc = it },
@@ -306,9 +294,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 maxLines = 1,
                 label = { Text("FVC") }
             )
-            if (fvc==""){
-            Text(text = errorName, style = TextStyle(color = Color.Red))
-             }
+
             TextField(
                 value = mwt1.trim(),
                 onValueChange = { mwt1 = it },
@@ -320,23 +306,24 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 maxLines = 1,
                 label = { Text("MWT 1") }
             )
-            if (mwt1==""){
-                Text(text = errorName, style = TextStyle(color = Color.Red))
-               }
+
             TextField(
-                value = mwt2.trim(),
-                onValueChange = { mwt2 = it },
+                value = mwt2,
+                onValueChange = { mwt2 = it
+                },
+
                 modifier
                     .padding(all = 10.dp)
                     .fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
 
                 maxLines = 1,
+
                 label = { Text("MWT 2") }
+
+
             )
-            if (mwt2==""){
-                Text(text = errorName, style = TextStyle(color = Color.Red))
-            }
+
 
             Button(
                 onClick = {
@@ -350,7 +337,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                                             Users(
                                                 userName,
                                                 email,
-                                                userPass ,
+                                                userPass,
                                                 age = it,
                                                 packHistory = it2,
                                                 fev1 = it1,
@@ -370,24 +357,29 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
 
 
 
-                        if (user != null) {
-                            signUp(user, context) {
-                                if (it) {
-                                    onNavigate()
-                                }
 
-
+                    if (user != null) {
+                        signUp(user, context) {
+                            if (it) {
+                                onNavigate()
                             }
-                        }
 
+
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(context, "Error Empty fields present!!", Toast.LENGTH_LONG).show()
+                    }
 
 
                 },
-                         modifier
+                modifier
                     .padding(top = 30.dp)
                     .width(200.dp)
             ) {
-                Text(text = "Sign up",
+                Text(
+                    text = "Sign up",
                     modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     fontSize = 20.sp
                 )
@@ -397,4 +389,6 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
         }
     }
 
+
 }
+
