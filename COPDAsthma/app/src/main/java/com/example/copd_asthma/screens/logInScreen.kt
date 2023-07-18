@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.R
-import com.example.copd_asthma.logIn
+import com.example.copd_asthma.features.authentication.logIn
 
 
 @OptIn(ExperimentalMaterial3Api::class)

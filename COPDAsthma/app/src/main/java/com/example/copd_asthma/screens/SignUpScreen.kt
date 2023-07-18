@@ -31,8 +31,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.copd_asthma.Users
-import com.example.copd_asthma.signUp
+import com.example.copd_asthma.data.Users
+import com.example.copd_asthma.features.authentication.signUp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
