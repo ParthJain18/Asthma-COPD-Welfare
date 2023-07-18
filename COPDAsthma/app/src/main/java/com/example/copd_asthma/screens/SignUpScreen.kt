@@ -317,7 +317,6 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
 
                 label = { Text("MWT 2") }
 
-
             )
 
 

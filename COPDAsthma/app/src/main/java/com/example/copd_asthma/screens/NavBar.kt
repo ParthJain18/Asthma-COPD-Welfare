@@ -75,11 +75,9 @@ fun NavBar(onLogOut: ()-> Unit) {
         },
 
         ) { padding->
-        val pad = padding
-
         NavHost(navController, startDestination = "home") {
             composable("home"
-            ) { HomeScreen() }
+            ) { HomeScreen(padding) }
             composable("settings"
             ) { SettingScreen() }
             composable("profile"

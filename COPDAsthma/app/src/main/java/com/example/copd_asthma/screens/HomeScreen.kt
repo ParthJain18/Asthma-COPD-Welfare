@@ -1,23 +1,20 @@
 package com.example.copd_asthma.screens
 
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -32,17 +29,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.copd_asthma.features.getCurrentLocation
 import com.example.copd_asthma.features.weatherApi.getData
 import com.example.copd_asthma.features.weatherApi.responseBody
 import com.parse.ParseUser
@@ -294,33 +287,33 @@ import com.parse.ParseUser
 //}
 
 
-private fun Modifier.shimmerEffect(): Modifier = composed {
-    var size by remember {
-        mutableStateOf(IntSize.Zero)
-    }
-    val transition = rememberInfiniteTransition()
-    val startOffsetX by transition.animateFloat(
-        initialValue = -2 * size.width.toFloat(),
-        targetValue = 2 * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500)
-        )
-    )
-    background(
-        brush = Brush.linearGradient(
-            colors = listOf(
-                Color(0xFFFFFFFF),
-                Color(0xFFAAAAAA),
-                Color(0xFFFFFFFF),
-            ),
-            start = Offset(startOffsetX, 0f),
-            end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
-        ),
-        shape = RoundedCornerShape(10.dp)
-    ).onGloballyPositioned {
-        size = it.size
-    }
-}
+//private fun Modifier.shimmerEffect(): Modifier = composed {
+//    var size by remember {
+//        mutableStateOf(IntSize.Zero)
+//    }
+//    val transition = rememberInfiniteTransition()
+//    val startOffsetX by transition.animateFloat(
+//        initialValue = -2 * size.width.toFloat(),
+//        targetValue = 2 * size.width.toFloat(),
+//        animationSpec = infiniteRepeatable(
+//            animation = tween(1500)
+//        )
+//    )
+//    background(
+//        brush = Brush.linearGradient(
+//            colors = listOf(
+//                Color(0xFFFFFFFF),
+//                Color(0xFFAAAAAA),
+//                Color(0xFFFFFFFF),
+//            ),
+//            start = Offset(startOffsetX, 0f),
+//            end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
+//        ),
+//        shape = RoundedCornerShape(10.dp)
+//    ).onGloballyPositioned {
+//        size = it.size
+//    }
+//}
 
 
 
@@ -330,7 +323,7 @@ private fun Modifier.shimmerEffect(): Modifier = composed {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(padding: PaddingValues) {
     val safety = "Safe"
 
     var isShowComp by remember { mutableStateOf(false)}
@@ -353,8 +346,14 @@ fun HomeScreen() {
 //    val gender = "Male"
 //    val age = "18"
 
-    val lat = 19.172
-    val lon = 72.124
+    val currentLocation = getCurrentLocation()
+    if (currentLocation != null) {
+        val (lat, lon) = currentLocation
+        Log.d("location", "$lat $lon")
+    } else {
+        Log.d("location", "null hai")
+    }
+
 
 
 
@@ -367,7 +366,7 @@ fun HomeScreen() {
             showCard = true
         }
     }
-    getData(lat, lon) {
+    getData(0.0,0.0) {
         responseObj = it
     }
 
@@ -385,9 +384,10 @@ fun HomeScreen() {
 
     Column(
         modifier = Modifier
-//                .padding(it)
             .verticalScroll(rememberScrollState())
-            .background(color = Color.Transparent),
+            .background(color = Color.Transparent)
+            .padding(padding)
+        ,
     ) {
         if (name != null) {
             Welcome(name)
@@ -455,14 +455,15 @@ fun HomeScreen() {
                 )
             }
         }
-        Box(modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 10.dp)
-                .pointerInput(Unit) {
-            detectTapGestures(
-                onTap = {
-                    isShowComp = !isShowComp
-                }
-            )
-        }
+        Box(modifier = Modifier
+            .padding(start = 30.dp, top = 25.dp, bottom = 10.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        isShowComp = !isShowComp
+                    }
+                )
+            }
             ,
             contentAlignment = Alignment.Center
         ) {
