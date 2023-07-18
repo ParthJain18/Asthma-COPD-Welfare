@@ -1,8 +1,9 @@
-package com.example.copd_asthma
+package com.example.copd_asthma.features.authentication
 
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.copd_asthma.data.Users
 import com.parse.ParseException
 import com.parse.ParseUser
 

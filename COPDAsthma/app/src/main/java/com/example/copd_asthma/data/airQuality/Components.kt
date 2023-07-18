@@ -1,4 +1,4 @@
-package com.example.copd_asthma.data
+package com.example.copd_asthma.data.airQuality
 
 data class Components(
     val co: Double,

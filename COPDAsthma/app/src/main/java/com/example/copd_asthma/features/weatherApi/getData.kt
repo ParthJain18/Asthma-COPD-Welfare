@@ -1,7 +1,7 @@
-package com.example.copd_asthma.weatherApi
+package com.example.copd_asthma.features.weatherApi
 
 import android.util.Log
-import com.example.copd_asthma.data.airQuality
+import com.example.copd_asthma.data.airQuality.airQuality
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

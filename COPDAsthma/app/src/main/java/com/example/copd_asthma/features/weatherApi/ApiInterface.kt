@@ -1,6 +1,6 @@
-package com.example.copd_asthma.weatherApi
+package com.example.copd_asthma.features.weatherApi
 
-import com.example.copd_asthma.data.airQuality
+import com.example.copd_asthma.data.airQuality.airQuality
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
