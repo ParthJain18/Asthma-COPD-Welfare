@@ -1,7 +1,6 @@
 package com.example.copd_asthma.screens
 
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -21,18 +20,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,8 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.copd_asthma.features.weatherApi.getData
 import com.example.copd_asthma.features.weatherApi.responseBody
 import com.parse.ParseUser
@@ -341,21 +330,21 @@ private fun Modifier.shimmerEffect(): Modifier = composed {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onLogOut: () -> Unit) {
-    val navController = rememberNavController()
-    val items = listOf("Home", "Settings", "Profile", "Log Out")
-    val icons = listOf(Icons.Filled.Home, Icons.Filled.Settings, Icons.Filled.Person, Icons.Filled.ExitToApp)
-    val actions = listOf({}, {}, {}, {
-        ParseUser.logOutInBackground() {
-            if (it==null) {
-                onLogOut()
-                Log.d("logout", "No errors")
-            }
-            else {
-                Log.d("logout", it.toString())
-            }
-        }
-    })
+fun HomeScreen() {
+//    val navController = rememberNavController()
+//    val items = listOf("Home", "Settings", "Profile", "Log Out")
+//    val icons = listOf(Icons.Filled.Home, Icons.Filled.Settings, Icons.Filled.Person, Icons.Filled.ExitToApp)
+//    val actions = listOf({}, {}, {}, {
+//        ParseUser.logOutInBackground() {
+//            if (it==null) {
+//                onLogOut()
+//                Log.d("logout", "No errors")
+//            }
+//            else {
+//                Log.d("logout", it.toString())
+//            }
+//        }
+//    })
 
     val safety = "Safe"
 
@@ -424,42 +413,42 @@ fun HomeScreen(onLogOut: () -> Unit) {
         0.9f to Color.White,
         1f to Color(0xFFFFFFFF)
     )
-    Scaffold(
-        modifier = Modifier.background(Brush.verticalGradient(colorStops = colorStops)),
-        bottomBar = {
-            NavigationBar(
-//                    modifier = Modifier.background(Color.Transparent),
-                containerColor = Color.White
-            ) {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-
-                items.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        icon = { Icon(icons[index], contentDescription = item) },
-                        label = { Text(item) },
-                        selected = currentRoute == item,
-                        onClick = {
-                            actions[index]()
-//                            navController.navigate(item) {
-//                                navController.graph.startDestinationRoute?.let { route ->
-//                                    popUpTo(route) {
-//                                        saveState = true
-//                                    }
-//                                }
-//                                launchSingleTop = true
-//                                restoreState = true
-
-                        }
-                    )
-                }
-            }
-        },
-
-    ) {
+//    Scaffold(
+//        modifier = Modifier.background(Brush.verticalGradient(colorStops = colorStops)),
+//        bottomBar = {
+//            NavigationBar(
+////                    modifier = Modifier.background(Color.Transparent),
+//                containerColor = Color.White
+//            ) {
+//                val navBackStackEntry by navController.currentBackStackEntryAsState()
+//                val currentRoute = navBackStackEntry?.destination?.route
+//
+//                items.forEachIndexed { index, item ->
+//                    NavigationBarItem(
+//                        icon = { Icon(icons[index], contentDescription = item) },
+//                        label = { Text(item) },
+//                        selected = currentRoute == item,
+//                        onClick = {
+//                            actions[index]()
+////                            navController.navigate(item) {
+////                                navController.graph.startDestinationRoute?.let { route ->
+////                                    popUpTo(route) {
+////                                        saveState = true
+////                                    }
+////                                }
+////                                launchSingleTop = true
+////                                restoreState = true
+//
+//                        }
+//                    )
+//                }
+//            }
+//        },
+//
+//    ) {
         Column(
             modifier = Modifier
-                .padding(it)
+//                .padding(it)
                 .verticalScroll(rememberScrollState())
                 .background(color = Color.Transparent),
         ) {
@@ -585,14 +574,14 @@ fun HomeScreen(onLogOut: () -> Unit) {
 
         }
     }
-    }
+
+
 
 
 
 @Preview(showBackground = true)
 @Composable
 fun Preview1() {
-    HomeScreen {}
 }
 
 

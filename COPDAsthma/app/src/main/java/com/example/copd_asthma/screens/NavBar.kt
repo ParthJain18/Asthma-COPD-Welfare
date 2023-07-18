@@ -1,5 +1,6 @@
 package com.example.copd_asthma.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
@@ -21,10 +22,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.parse.ParseUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavBar() {
+fun NavBar(onLogOut: ()-> Unit) {
     val navController = rememberNavController()
     val items = listOf("Home", "Settings", "Profile", "Log Out")
     val icons = listOf(Icons.Filled.Home, Icons.Filled.Settings, Icons.Filled.Person, Icons.Filled.ExitToApp)
@@ -51,42 +53,40 @@ fun NavBar() {
                         label = { Text(item) },
                         selected = currentRoute == item,
                         onClick = {
-//                            navController.navigate(item) {
-//                                navController.graph.startDestinationRoute?.let { route ->
-//                                    popUpTo(route) {
-//                                        saveState = true
-//                                    }
-//                                }
-//                                launchSingleTop = true
-//                                restoreState = true
-
+                            when (index) {
+                                0 -> navController.navigate("home")
+                                1 -> navController.navigate("settings")
+                                2 -> navController.navigate("profile")
+                                3 -> {
+                                    ParseUser.logOutInBackground {
+                                        if (it == null) {
+                                            onLogOut()
+                                            Log.d("logout", "No errors")
+                                        } else {
+                                            Log.d("logout", it.toString())
+                                        }
+                                    }
+                                }
+                            }
                         }
                     )
                 }
             }
         },
 
-        ) {
-        val pad = it
+        ) { padding->
+        val pad = padding
 
         NavHost(navController, startDestination = "home") {
-            // Define your navigation graph using NavGraphBuilder
-            composable("home") { HomeScreen(onLogOut = { navController.navigate("LogInScreen") }) }
-            composable("settings") { SettingsScreen() }
-            composable("profile") { ProfileScreen() }
-            // Add more destinations as needed
+            composable("home"
+            ) { HomeScreen() }
+            composable("settings"
+            ) { SettingScreen() }
+            composable("profile"
+            ) { ProfileScreen() }
         }
-
 
     }
 }
 
-@Composable
-fun ProfileScreen() {
-    TODO("Not yet implemented")
-}
 
-@Composable
-fun SettingsScreen() {
-    TODO("Not yet implemented")
-}

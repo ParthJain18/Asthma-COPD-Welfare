@@ -3,9 +3,6 @@ package com.example.copd_asthma
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
@@ -15,8 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.copd_asthma.screens.HomeScreen
 import com.example.copd_asthma.screens.LogInScreen
+import com.example.copd_asthma.screens.NavBar
 import com.example.copd_asthma.screens.SignUpScreen
 import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
 
@@ -46,18 +43,18 @@ fun AppNavigator() {
     NavHost(navController, startDestination = startingScreen) {
         composable("LogInScreen") {
             LogInScreen(
-                onLogIn = { navController.navigate("HomeScreen") },
+                onLogIn = { navController.navigate("NavBar") },
                 onSignUp = {navController.navigate("SignUpScreen")})
         }
         composable("SignUpScreen") {
-            SignUpScreen (onNavigate = { navController.navigate("HomeScreen") })
+            SignUpScreen (onNavigate = { navController.navigate("NavBar") })
         }
-        composable("HomeScreen",
-            enterTransition = { fadeIn(animationSpec = tween(300)) },
-            exitTransition = { fadeOut(animationSpec = tween(300)) }
+        composable("NavBar"
+//            enterTransition = { fadeIn(animationSpec = tween(300)) },
+//            exitTransition = { fadeOut(animationSpec = tween(300)) }
             )
              {
-            HomeScreen( onLogOut = { navController.navigate("LogInScreen") })
+            NavBar( onLogOut = { navController.navigate("LogInScreen") })
         }
 
     }

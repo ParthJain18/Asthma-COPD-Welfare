@@ -22,7 +22,7 @@ class App : Application() {
         startingScreen = if (currentUser == null) {
             "LogInScreen"
         } else {
-            "HomeScreen"
+            "NavBar"
         }
 
     }
