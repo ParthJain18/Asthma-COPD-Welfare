@@ -14,7 +14,10 @@ var responseBody: airQuality? = null
 
 
 fun getData(lat: Double, lon: Double, callback: (airQuality?) -> Unit) {
-    val retrofit = Retrofit.Builder()
+
+    Log.d("location", "$lat   $lon")
+
+        val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .build()

@@ -347,19 +347,37 @@ fun HomeScreen(padding: PaddingValues) {
 //    val age = "18"
 
 
-    val currentLocation = getCurrentLocation()
-    if (currentLocation != null) {
-        val (lat, lon) = currentLocation
-        Log.d("location", "$lat $lon")
-    } else {
-        Log.d("location", "null hai")
+    var lat by remember { mutableStateOf<Double?>(null) }
+    var lon by remember { mutableStateOf<Double?>(null) }
+
+    var showCard by remember {mutableStateOf(false)}
+    var responseObj by remember { mutableStateOf(responseBody) }
+
+    var currentLocation by remember {mutableStateOf<Pair<Double, Double>?>(null) }
+
+    currentLocation = getCurrentLocation()
+
+    LaunchedEffect(currentLocation) {
+        if (currentLocation != null) {
+            lat = currentLocation!!.first
+            lon = currentLocation!!.second
+            Log.d("location", "$lat $lon")
+        } else {
+            Log.d("location", "null hai")
+        }
+
+
+        if(lat!= null && lon!= null) {
+            getData(lat!!, lon!!) {
+                responseObj = it
+            }
+        }
+
     }
 
 
 
 
-    var showCard by remember {mutableStateOf(false)}
-    var responseObj by remember { mutableStateOf(responseBody) }
 
 
     LaunchedEffect(responseObj) {
@@ -367,9 +385,8 @@ fun HomeScreen(padding: PaddingValues) {
             showCard = true
         }
     }
-    getData(0.0,0.0) {
-        responseObj = it
-    }
+
+
 
 
 
