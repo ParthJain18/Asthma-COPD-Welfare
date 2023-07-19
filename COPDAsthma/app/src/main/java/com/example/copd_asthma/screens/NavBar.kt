@@ -79,9 +79,9 @@ fun NavBar(onLogOut: ()-> Unit) {
             composable("home"
             ) { HomeScreen(padding) }
             composable("settings"
-            ) { SettingScreen() }
+            ) { SettingScreen(padding) }
             composable("profile"
-            ) { ProfileScreen() }
+            ) { ProfileScreen(padding) }
         }
 
     }
