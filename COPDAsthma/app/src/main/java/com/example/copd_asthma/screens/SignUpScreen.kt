@@ -343,17 +343,17 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                         user = null
                     }
 
-                    if (user != null) {
-                        signUp(user, context) {callback ->
-                            if (callback) {
-                                onNavigate()
-                            }
+                if (user != null) {
+                    signUp(user, context) {callback ->
+                        if (callback) {
+                            onNavigate()
                         }
                     }
-                    else
-                    {
-                        Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()
-                    }
+                }
+                else
+                {
+                    Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()
+                }
 
 
                 },

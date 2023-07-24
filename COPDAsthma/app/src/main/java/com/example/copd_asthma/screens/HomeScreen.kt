@@ -1,7 +1,6 @@
 package com.example.copd_asthma.screens
 
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
@@ -22,10 +21,10 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,9 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.copd_asthma.features.getCurrentLocation
-import com.example.copd_asthma.features.weatherApi.getData
-import com.example.copd_asthma.features.weatherApi.responseBody
+import com.example.copd_asthma.data.airQuality.airQuality
 import com.parse.ParseUser
 
 
@@ -323,7 +320,9 @@ import com.parse.ParseUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(padding: PaddingValues) {
+fun HomeScreen(padding: PaddingValues, responseObj1: airQuality?) {
+
+    val responseObj by rememberUpdatedState(newValue = responseObj1)
     val safety = "Safe"
 
     var isShowComp by remember { mutableStateOf(false)}
@@ -347,44 +346,39 @@ fun HomeScreen(padding: PaddingValues) {
 //    val age = "18"
 
 
-    var lat by remember { mutableStateOf<Double?>(null) }
-    var lon by remember { mutableStateOf<Double?>(null) }
-
-    var showCard by remember {mutableStateOf(false)}
-    var responseObj by remember { mutableStateOf(responseBody) }
-
-    var currentLocation by remember {mutableStateOf<Pair<Double, Double>?>(null) }
-
-    currentLocation = getCurrentLocation()
-
-    LaunchedEffect(currentLocation) {
-        if (currentLocation != null) {
-            lat = currentLocation!!.first
-            lon = currentLocation!!.second
-            Log.d("location", "$lat $lon")
-        } else {
-            Log.d("location", "null hai")
-        }
-
-
-        if(lat!= null && lon!= null) {
-            getData(lat!!, lon!!) {
-                responseObj = it
-            }
-        }
-
-    }
-
-
+//    var lat by remember { mutableStateOf<Double?>(null) }
+//    var lon by remember { mutableStateOf<Double?>(null) }
+//
+//    var showCard by remember {mutableStateOf(false)}
+//    var responseObj by remember { mutableStateOf(responseBody) }
+//
+//    var currentLocation by remember {mutableStateOf<Pair<Double, Double>?>(null) }
+//
+//    currentLocation = getCurrentLocation()
+//
+//    LaunchedEffect(currentLocation) {
+//        if (currentLocation != null) {
+//            lat = currentLocation!!.first
+//            lon = currentLocation!!.second
+//            Log.d("location1", "$lat $lon")
+//        } else {
+//            Log.d("location1", "null hai")
+//        }
+//
+//
+//        if(lat!= null && lon!= null) {
+//            getData(lat!!, lon!!) {
+//                responseObj = it
+//            }
+//        }
+//
+//    }
 
 
 
 
-    LaunchedEffect(responseObj) {
-        if(responseObj != null) {
-            showCard = true
-        }
-    }
+
+
 
 
 

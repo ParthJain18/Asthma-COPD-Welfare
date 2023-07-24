@@ -2,6 +2,7 @@ package com.example.copd_asthma
 
 import android.app.Application
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
 import com.parse.Parse
 import com.parse.ParseUser
@@ -9,6 +10,8 @@ import com.parse.ParseUser
 
 var startingScreen: String = ""
 lateinit var fusedLocationClient: FusedLocationProviderClient
+lateinit var geofencingClient: GeofencingClient
+
 
 
 class App : Application() {
@@ -24,6 +27,8 @@ class App : Application() {
         )
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        geofencingClient = LocationServices.getGeofencingClient(this)
+
 
 
         val currentUser : ParseUser? = ParseUser.getCurrentUser()
