@@ -49,10 +49,7 @@ fun AppNavigator() {
         composable("SignUpScreen") {
             SignUpScreen (onNavigate = { navController.navigate("NavBar") })
         }
-        composable("NavBar"
-//            enterTransition = { fadeIn(animationSpec = tween(300)) },
-//            exitTransition = { fadeOut(animationSpec = tween(300)) }
-            )
+        composable("NavBar")
              {
             NavBar( onLogOut = { navController.navigate("LogInScreen") })
         }

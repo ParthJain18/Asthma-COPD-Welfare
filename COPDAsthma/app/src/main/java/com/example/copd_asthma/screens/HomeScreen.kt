@@ -2,22 +2,18 @@ package com.example.copd_asthma.screens
 
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -25,26 +21,20 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.copd_asthma.features.weatherApi.getData
-import com.example.copd_asthma.features.weatherApi.responseBody
+import com.example.copd_asthma.data.airQuality.airQuality
 import com.parse.ParseUser
 
 
@@ -294,33 +284,33 @@ import com.parse.ParseUser
 //}
 
 
-private fun Modifier.shimmerEffect(): Modifier = composed {
-    var size by remember {
-        mutableStateOf(IntSize.Zero)
-    }
-    val transition = rememberInfiniteTransition()
-    val startOffsetX by transition.animateFloat(
-        initialValue = -2 * size.width.toFloat(),
-        targetValue = 2 * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500)
-        )
-    )
-    background(
-        brush = Brush.linearGradient(
-            colors = listOf(
-                Color(0xFFFFFFFF),
-                Color(0xFFAAAAAA),
-                Color(0xFFFFFFFF),
-            ),
-            start = Offset(startOffsetX, 0f),
-            end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
-        ),
-        shape = RoundedCornerShape(10.dp)
-    ).onGloballyPositioned {
-        size = it.size
-    }
-}
+//private fun Modifier.shimmerEffect(): Modifier = composed {
+//    var size by remember {
+//        mutableStateOf(IntSize.Zero)
+//    }
+//    val transition = rememberInfiniteTransition()
+//    val startOffsetX by transition.animateFloat(
+//        initialValue = -2 * size.width.toFloat(),
+//        targetValue = 2 * size.width.toFloat(),
+//        animationSpec = infiniteRepeatable(
+//            animation = tween(1500)
+//        )
+//    )
+//    background(
+//        brush = Brush.linearGradient(
+//            colors = listOf(
+//                Color(0xFFFFFFFF),
+//                Color(0xFFAAAAAA),
+//                Color(0xFFFFFFFF),
+//            ),
+//            start = Offset(startOffsetX, 0f),
+//            end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat())
+//        ),
+//        shape = RoundedCornerShape(10.dp)
+//    ).onGloballyPositioned {
+//        size = it.size
+//    }
+//}
 
 
 
@@ -330,22 +320,9 @@ private fun Modifier.shimmerEffect(): Modifier = composed {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
-//    val navController = rememberNavController()
-//    val items = listOf("Home", "Settings", "Profile", "Log Out")
-//    val icons = listOf(Icons.Filled.Home, Icons.Filled.Settings, Icons.Filled.Person, Icons.Filled.ExitToApp)
-//    val actions = listOf({}, {}, {}, {
-//        ParseUser.logOutInBackground() {
-//            if (it==null) {
-//                onLogOut()
-//                Log.d("logout", "No errors")
-//            }
-//            else {
-//                Log.d("logout", it.toString())
-//            }
-//        }
-//    })
+fun HomeScreen(padding: PaddingValues, responseObj1: airQuality?) {
 
+    val responseObj by rememberUpdatedState(newValue = responseObj1)
     val safety = "Safe"
 
     var isShowComp by remember { mutableStateOf(false)}
@@ -368,23 +345,42 @@ fun HomeScreen() {
 //    val gender = "Male"
 //    val age = "18"
 
-    val lat = 19.172
-    val lon = 72.124
+
+//    var lat by remember { mutableStateOf<Double?>(null) }
+//    var lon by remember { mutableStateOf<Double?>(null) }
+//
+//    var showCard by remember {mutableStateOf(false)}
+//    var responseObj by remember { mutableStateOf(responseBody) }
+//
+//    var currentLocation by remember {mutableStateOf<Pair<Double, Double>?>(null) }
+//
+//    currentLocation = getCurrentLocation()
+//
+//    LaunchedEffect(currentLocation) {
+//        if (currentLocation != null) {
+//            lat = currentLocation!!.first
+//            lon = currentLocation!!.second
+//            Log.d("location1", "$lat $lon")
+//        } else {
+//            Log.d("location1", "null hai")
+//        }
+//
+//
+//        if(lat!= null && lon!= null) {
+//            getData(lat!!, lon!!) {
+//                responseObj = it
+//            }
+//        }
+//
+//    }
 
 
 
-    var showCard by remember {mutableStateOf(false)}
-    var responseObj by remember { mutableStateOf(responseBody) }
 
 
-    LaunchedEffect(responseObj) {
-        if(responseObj != null) {
-            showCard = true
-        }
-    }
-    getData(lat, lon) {
-        responseObj = it
-    }
+
+
+
 
 
 
@@ -398,182 +394,136 @@ fun HomeScreen() {
     val pm2_5 = responseObj?.myList?.get(0)?.components?.pm2_5.toString()
     val so2 = responseObj?.myList?.get(0)?.components?.so2.toString()
 
-//    val aqi = "1"
-//    val co= "20"
-//    val no2 = "20"
-//    val o3 = "20"
-//    val pm10 = "20"
-//    val pm2_5 = "20"
-//    val so2 = "20"
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .background(color = Color.Transparent)
+            .padding(padding)
+        ,
+    ) {
+        if (name != null) {
+            Welcome(name)
+        }
+        if (fev1 != null && fvc != null) {
+            FevCard(fev1, fvc)
+        }
+        Box(modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 10.dp)) {
+            HeadingText(
+                text1 = "Your COPD severity level is:",
+                size = 19.sp,
+                fontWeight1 = FontWeight.Medium
+            )
+        }
+        Box(modifier = Modifier.padding(start = 30.dp)) {
+            val color: Color = when(sever) {
+                "Mild" -> Color(25, 179, 103, 255)
+                "Moderate" -> Color(255, 170, 51)
+                "Severe" -> Color(255, 87, 51, 228)
+                "Very Severe" -> Color(210, 4, 45)
 
-
-    val colorStops = arrayOf(
-        0.0f to Color(0xFFEBFFE6),
-        0.3f to Color(0xFFEAFFE7),
-        0.9f to Color.White,
-        1f to Color(0xFFFFFFFF)
-    )
-//    Scaffold(
-//        modifier = Modifier.background(Brush.verticalGradient(colorStops = colorStops)),
-//        bottomBar = {
-//            NavigationBar(
-////                    modifier = Modifier.background(Color.Transparent),
-//                containerColor = Color.White
-//            ) {
-//                val navBackStackEntry by navController.currentBackStackEntryAsState()
-//                val currentRoute = navBackStackEntry?.destination?.route
-//
-//                items.forEachIndexed { index, item ->
-//                    NavigationBarItem(
-//                        icon = { Icon(icons[index], contentDescription = item) },
-//                        label = { Text(item) },
-//                        selected = currentRoute == item,
-//                        onClick = {
-//                            actions[index]()
-////                            navController.navigate(item) {
-////                                navController.graph.startDestinationRoute?.let { route ->
-////                                    popUpTo(route) {
-////                                        saveState = true
-////                                    }
-////                                }
-////                                launchSingleTop = true
-////                                restoreState = true
-//
-//                        }
-//                    )
-//                }
-//            }
-//        },
-//
-//    ) {
-        Column(
-            modifier = Modifier
-//                .padding(it)
-                .verticalScroll(rememberScrollState())
-                .background(color = Color.Transparent),
-        ) {
-            if (name != null) {
-                Welcome(name)
+                else -> {Color.Black}
             }
-            if (fev1 != null && fvc != null) {
-                FevCard(fev1, fvc)
-            }
-            Box(modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 10.dp)) {
-                HeadingText(
-                    text1 = "Your COPD severity level is:",
-                    size = 19.sp,
-                    fontWeight1 = FontWeight.Medium
+            if (sever != null) {
+                ColoredText(
+                    text1 = sever,
+                    size = 30.sp,
+                    fontWeight1 = FontWeight.Bold,
+                    color = color
                 )
             }
-            Box(modifier = Modifier.padding(start = 30.dp)) {
-                val color: Color = when(sever) {
-                    "Mild" -> Color(25, 179, 103, 255)
-                    "Moderate" -> Color(255, 170, 51)
-                    "Severe" -> Color(255, 87, 51, 228)
-                    "Very Severe" -> Color(210, 4, 45)
+        }
+        Box(modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 10.dp)) {
+            HeadingText(
+                text1 = "Current Air Quality Index is: $aqi",
+                size = 19.sp,
+                fontWeight1 = FontWeight.Medium
+            )
+        }
+        Box(modifier = Modifier.padding(start = 30.dp, top = 10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val color: Color = when(safety) {
+                    "Safe" -> Color(25, 179, 103, 255)
+                    "Mildly Hazardous" -> Color(255, 170, 51)
+                    "Hazardous" -> Color(255, 87, 51, 228)
+//                            "Very Severe" -> Color(210, 4, 45)
 
                     else -> {Color.Black}
                 }
-                if (sever != null) {
-                    ColoredText(
-                        text1 = sever,
-                        size = 30.sp,
-                        fontWeight1 = FontWeight.Bold,
-                        color = color
+                Box(contentAlignment = Alignment.Center
+                ) {
+                    HeadingText(
+                        text1 = "This area is ",
+                        size = 19.sp,
+                        fontWeight1 = FontWeight.Medium
                     )
                 }
-            }
-            Box(modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 10.dp)) {
-                HeadingText(
-                    text1 = "Current Air Quality Index is: $aqi",
-                    size = 19.sp,
-                    fontWeight1 = FontWeight.Medium
+                ColoredText(
+                    text1 = safety,
+                    size = 25.sp,
+                    fontWeight1 = FontWeight.ExtraBold,
+                    color = color
                 )
             }
-            Box(modifier = Modifier.padding(start = 30.dp, top = 10.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val color: Color = when(safety) {
-                        "Safe" -> Color(25, 179, 103, 255)
-                        "Mildly Hazardous" -> Color(255, 170, 51)
-                        "Hazardous" -> Color(255, 87, 51, 228)
-//                            "Very Severe" -> Color(210, 4, 45)
-
-                        else -> {Color.Black}
-                    }
-                    Box(contentAlignment = Alignment.Center
-                    ) {
-                        HeadingText(
-                            text1 = "This area is ",
-                            size = 19.sp,
-                            fontWeight1 = FontWeight.Medium
-                        )
-                    }
-                    ColoredText(
-                        text1 = safety,
-                        size = 25.sp,
-                        fontWeight1 = FontWeight.ExtraBold,
-                        color = color
-                    )
-                }
-            }
-            Box(modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 10.dp)
-                    .pointerInput(Unit) {
+        }
+        Box(modifier = Modifier
+            .padding(start = 30.dp, top = 25.dp, bottom = 10.dp)
+            .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
                         isShowComp = !isShowComp
                     }
                 )
             }
-                ,
-                contentAlignment = Alignment.Center
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    HeadingText(
-                        text1 = "Show Air Components  ",
-                        size = 19.sp,
-                        fontWeight1 = FontWeight.Medium
-                    )
-                    Box(contentAlignment = Alignment.Center,
-                    ) {
-
-                        Icon(
-                            imageVector = if (isShowComp) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                            contentDescription = "Dropdown Icon",
-                            modifier = Modifier.size(30.dp)
-                        )
-
-                    }
-                }
-
-            }
-            AnimatedVisibility(
-                visible = isShowComp,
-                enter = fadeIn(
-                    initialAlpha = 0.0f
+            ,
+            contentAlignment = Alignment.Center
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                HeadingText(
+                    text1 = "Show Air Components  ",
+                    size = 19.sp,
+                    fontWeight1 = FontWeight.Medium
                 )
-            ) {
-                Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
-                    Spacer(modifier = Modifier.heightIn(5.dp))
-                    RowOfText("CO:  ", co)
-                    Spacer(modifier = Modifier.heightIn(5.dp))
-                    RowOfText("SO2:  ", so2)
-                    Spacer(modifier = Modifier.heightIn(5.dp))
-                    RowOfText("PM2.5:  ", pm2_5)
-                    Spacer(modifier = Modifier.heightIn(5.dp))
-                    RowOfText("PM10:  ", pm10)
-                    Spacer(modifier = Modifier.heightIn(5.dp))
-                    RowOfText("NO2:  ", no2)
-                    Spacer(modifier = Modifier.heightIn(5.dp))
-                    RowOfText("O3:  ", o3)
-                    Spacer(modifier = Modifier.heightIn(20.dp))
+                Box(contentAlignment = Alignment.Center,
+                ) {
+
+                    Icon(
+                        imageVector = if (isShowComp) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                        contentDescription = "Dropdown Icon",
+                        modifier = Modifier.size(30.dp)
+                    )
+
                 }
             }
-
 
         }
+        AnimatedVisibility(
+            visible = isShowComp,
+            enter = fadeIn(
+                initialAlpha = 0.0f
+            )
+        ) {
+            Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
+                Spacer(modifier = Modifier.heightIn(5.dp))
+                RowOfText("CO:  ", co)
+                Spacer(modifier = Modifier.heightIn(5.dp))
+                RowOfText("SO2:  ", so2)
+                Spacer(modifier = Modifier.heightIn(5.dp))
+                RowOfText("PM2.5:  ", pm2_5)
+                Spacer(modifier = Modifier.heightIn(5.dp))
+                RowOfText("PM10:  ", pm10)
+                Spacer(modifier = Modifier.heightIn(5.dp))
+                RowOfText("NO2:  ", no2)
+                Spacer(modifier = Modifier.heightIn(5.dp))
+                RowOfText("O3:  ", o3)
+                Spacer(modifier = Modifier.heightIn(20.dp))
+            }
+        }
+
+
     }
+}
 
 
 

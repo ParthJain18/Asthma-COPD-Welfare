@@ -1,5 +1,6 @@
 package com.example.copd_asthma.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,7 +37,7 @@ import com.example.copd_asthma.features.authentication.signUp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
+fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty Field"  ,onNavigate: () -> Unit) {
 
     var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -55,6 +56,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
 
 
 
+
     Surface(
         modifier = Modifier.padding(5.dp)
     ) {
@@ -70,7 +72,6 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             ) {
 
 
-
             Text(
                 text = "Please Enter Your Spirometry Results:",
                 modifier
@@ -78,21 +79,25 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                     .fillMaxWidth(),
                 fontSize = 21.sp,
                 textAlign = TextAlign.Left
+
             )
             Spacer(
                 modifier.heightIn(50.dp)
             )
             TextField(
-                value = userName,
+                value = userName.trim(),
                 onValueChange = { userName = it },
                 modifier
                     .padding(all = 10.dp)
                     .fillMaxWidth(),
                 maxLines = 1,
+
                 label = { Text("Full Name") }
             )
+
+
             TextField(
-                value = email,
+                value = email.trim(),
                 onValueChange = { email = it },
                 modifier
                     .padding(all = 10.dp)
@@ -100,8 +105,9 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 maxLines = 1,
                 label = { Text("E-mail") }
             )
+
             TextField(
-                value = userPass,
+                value = userPass.trim(),
                 onValueChange = { userPass = it },
                 modifier
                     .padding(all = 10.dp)
@@ -109,9 +115,11 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 maxLines = 1,
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation()
+
             )
+
             TextField(
-                value = userAge,
+                value = userAge.trim(),
                 onValueChange = { userAge = it },
 
                 modifier
@@ -121,6 +129,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 maxLines = 1,
                 label = { Text("Age") }
             )
+
             Text(
                 text = "Enter Your Gender:",
                 modifier
@@ -130,7 +139,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 textAlign = TextAlign.Left
             )
 
-            val gender = listOf("Male","Female", "other")
+
+            val gender = listOf("Male", "Female", "other")
             val (selected, onOptionSelect) = remember { mutableStateOf("") }
             Column {
                 gender.forEach { text ->
@@ -151,9 +161,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                     ) {
                         RadioButton(
                             selected = (text == selected),
-                            onClick = {
-                                onOptionSelect(text)
-                            }
+                            onClick = { onOptionSelect(text) }
                         )
                         Text(
                             text = text,
@@ -171,7 +179,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 textAlign = TextAlign.Left
             )
 
-            val diabetes = listOf("Yes","No")
+            val diabetes = listOf("Yes", "No")
             val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf("") }
             Column {
                 diabetes.forEach { text ->
@@ -194,13 +202,17 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                             selected = (text == diabetesSelect),
                             onClick = { onDiabetesSelect(text) }
                         )
+
                         Text(
                             text = text,
+                            modifier = Modifier.padding(start = 16.dp),
 
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
+                            )
+
                     }
+
                 }
+
             }
             Text(
                 text = "Do you have Hypertension?:",
@@ -211,10 +223,10 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 textAlign = TextAlign.Left
             )
 
-            val hypertention = listOf("Yes","No")
+            val hypertension = listOf("Yes", "No")
             val (hyperSelect, onHyperSelect) = remember { mutableStateOf("") }
             Column {
-                hypertention.forEach { text ->
+                hypertension.forEach { text ->
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -232,9 +244,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                     ) {
                         RadioButton(
                             selected = (text == hyperSelect),
-                            onClick = {
-                                onHyperSelect(text)
-                            }
+                            onClick = { onHyperSelect(text) }
                         )
                         Text(
                             text = text,
@@ -246,7 +256,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
 
 
             TextField(
-                value = packHistory,
+                value = packHistory.trim(),
                 onValueChange = { packHistory = it },
                 modifier
                     .padding(all = 10.dp)
@@ -258,7 +268,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
             )
 
             TextField(
-                value = fev1,
+                value = fev1.trim(),
                 onValueChange = { fev1 = it },
                 modifier
                     .padding(all = 10.dp)
@@ -268,8 +278,9 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 maxLines = 1,
                 label = { Text("FEV 1") }
             )
+
             TextField(
-                value = fvc,
+                value = fvc.trim(),
                 onValueChange = { fvc = it },
                 modifier
                     .padding(all = 10.dp)
@@ -279,8 +290,9 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 maxLines = 1,
                 label = { Text("FVC") }
             )
+
             TextField(
-                value = mwt1,
+                value = mwt1.trim(),
                 onValueChange = { mwt1 = it },
                 modifier
                     .padding(all = 10.dp)
@@ -290,45 +302,67 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                 maxLines = 1,
                 label = { Text("MWT 1") }
             )
+
             TextField(
                 value = mwt2,
-                onValueChange = { mwt2 = it },
+                onValueChange = { mwt2 = it
+                },
+
                 modifier
                     .padding(all = 10.dp)
                     .fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
 
                 maxLines = 1,
+
                 label = { Text("MWT 2") }
+
             )
+
 
             Button(
                 onClick = {
-                    val user = Users(
-                        userName,
-                        email,
-                        userPass ,
-                        age = userAge.toInt(),
-                        packHistory = packHistory.toInt(),
-                        fev1 = fev1.toInt(),
-                        fvc = fvc.toInt(),
-                        mwt1 = mwt1.toInt(),
-                        mwt2 = mwt2.toInt(),
-                        gender = userGender,
-                        diabetes = userDiabetes,
-                        hypertension = userHypertension
+                    val user: Users?
+                    if (listOf(userName, email, userPass, packHistory, fev1, fvc, mwt1, mwt2, userGender, userDiabetes, userHypertension).any {it.isNotEmpty()}) {
+                        user = Users(
+                            userName,
+                            email,
+                            userPass,
+                            age = userAge.toInt(),
+                            packHistory = packHistory.toInt(),
+                            fev1 = fev1.toDouble(),
+                            fvc = fvc.toDouble(),
+                            mwt1 = mwt1.toDouble(),
+                            mwt2 = mwt2.toDouble(),
+                            gender = userGender,
+                            diabetes = userDiabetes,
+                            hypertension = userHypertension
                     )
-                    signUp(user, context) {
-                        if (it) {
+                }
+                else {
+                        user = null
+                    }
+
+                if (user != null) {
+                    signUp(user, context) {callback ->
+                        if (callback) {
                             onNavigate()
                         }
                     }
+                }
+                else
+                {
+                    Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()
+                }
+
+
                 },
                 modifier
                     .padding(top = 30.dp)
                     .width(200.dp)
             ) {
-                Text(text = "Sign up",
+                Text(
+                    text = "Sign up",
                     modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     fontSize = 20.sp
                 )
@@ -337,5 +371,6 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
 
         }
     }
+
 
 }
