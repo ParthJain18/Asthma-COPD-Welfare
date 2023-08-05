@@ -1,10 +1,15 @@
 package com.example.copd_asthma.features.location
 
-import android.annotation.SuppressLint
+import android.Manifest
+import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import com.example.copd_asthma.features.weatherApi.getData
+import com.example.copd_asthma.screens.SharedState
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
@@ -12,9 +17,9 @@ import com.google.android.gms.location.LocationServices
 
 class GeofenceHelper(private val context: Context) {
 
+    private val LOCATION_PERMISSION_REQUEST_CODE = 102
     private val geofencingClient: GeofencingClient = LocationServices.getGeofencingClient(context)
 
-    @SuppressLint("MissingPermission")
     fun addGeofence(requestId: String, latitude: Double, longitude: Double, radius: Float) {
         val geofence = Geofence.Builder()
             .setRequestId(requestId)
@@ -30,7 +35,20 @@ class GeofenceHelper(private val context: Context) {
 
         val geofencePendingIntent = getGeofencePendingIntent
 
-        geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
+
+
+
+
+
+    if (ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        requestLocationPermission()
+        return
+    }
+    geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
             addOnSuccessListener {
                 Log.d(TAG, "Geofence added: $requestId at $latitude, $longitude")
             }
@@ -44,7 +62,13 @@ class GeofenceHelper(private val context: Context) {
         }
     }
 
-
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
+    }
 
 
     private val getGeofencePendingIntent: PendingIntent by lazy {
@@ -53,7 +77,11 @@ class GeofenceHelper(private val context: Context) {
     }
 
 
+
+
     companion object {
         private const val TAG = "Geofence"
     }
+
+
 }

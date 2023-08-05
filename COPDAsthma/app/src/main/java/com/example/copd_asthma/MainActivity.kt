@@ -1,8 +1,10 @@
 package com.example.copd_asthma
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
@@ -19,12 +21,17 @@ import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
 
 
 class MainActivity : ComponentActivity() {
+
+
+
+
+
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             COPDAsthmaTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -33,8 +40,14 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
+
+
+
+
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigator() {
@@ -43,17 +56,16 @@ fun AppNavigator() {
     NavHost(navController, startDestination = startingScreen) {
         composable("LogInScreen") {
             LogInScreen(
-                onLogIn = { navController.navigate("NavBar") },
+                onLogIn = { navController.navigate("navbar") },
                 onSignUp = {navController.navigate("SignUpScreen")})
         }
         composable("SignUpScreen") {
-            SignUpScreen (onNavigate = { navController.navigate("NavBar") })
+            SignUpScreen (onNavigate = { navController.navigate("navbar") })
         }
         composable("NavBar")
              {
             NavBar( onLogOut = { navController.navigate("LogInScreen") })
         }
-
     }
 
 }

@@ -39,8 +39,8 @@ import com.example.copd_asthma.features.authentication.logIn
 @Composable
 fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: () -> Unit) {
 
-    var userName by remember { mutableStateOf("") }
-    var userPass by remember { mutableStateOf("") }
+    var userName by remember { mutableStateOf("123@123") }
+    var userPass by remember { mutableStateOf("123") }
 
     val context = LocalContext.current
 

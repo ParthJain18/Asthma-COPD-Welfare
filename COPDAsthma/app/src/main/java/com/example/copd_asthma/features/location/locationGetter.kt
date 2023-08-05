@@ -1,48 +1,38 @@
 package com.example.copd_asthma.features.location
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.core.content.ContextCompat
 
+@SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
-@Composable
-fun getLocation(context: Context, onLocationReceived: (Double, Double) -> Unit) {
+fun GetLocation(context: Context, onLocationReceived: (Double, Double) -> Unit) {
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            // Once the location is received, remove the listener to stop receiving updates
             locationManager.removeUpdates(this)
             onLocationReceived(location.latitude, location.longitude)
         }
     }
-    
-    LaunchedEffect(Unit) {
-        val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
 
-        locationPermission.forEach {
-            val hasLocationPermission = ContextCompat.checkSelfPermission(context, it)
-            if (hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
-                //TODO: Ask for permissions
-            }
-        }
 
-    }
 
-    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null)
+    locationManager.requestSingleUpdate(
+        LocationManager.GPS_PROVIDER,
+        locationListener,
+        null)
 
 
 
 
 
-//    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, null)
+
+
+    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, null)
 }
 
 

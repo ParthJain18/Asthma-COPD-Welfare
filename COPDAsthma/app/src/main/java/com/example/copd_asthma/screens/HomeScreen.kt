@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.copd_asthma.data.airQuality.airQuality
 import com.parse.ParseUser
 
 
@@ -320,9 +318,9 @@ import com.parse.ParseUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(padding: PaddingValues, responseObj1: airQuality?) {
+fun HomeScreen(padding: PaddingValues) {
 
-    val responseObj by rememberUpdatedState(newValue = responseObj1)
+    val responseObj = SharedState.responseObj
     val safety = "Safe"
 
     var isShowComp by remember { mutableStateOf(false)}

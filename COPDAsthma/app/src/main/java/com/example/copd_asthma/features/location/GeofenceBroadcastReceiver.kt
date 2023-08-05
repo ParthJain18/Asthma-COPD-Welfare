@@ -4,13 +4,18 @@ package com.example.copd_asthma.features.location
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import com.example.copd_asthma.features.notification.notification
+import com.example.copd_asthma.screens.createGeofenceAt
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
     //    @SuppressLint("MissingPermission")
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "Geofence onReceive called! 1")
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
@@ -42,6 +47,13 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                     Log.d(TAG, "Geofence transition detected for: $requestId")
                     // Perform the desired action here, like showing a notification, etc.
                     //TODO: Notification trigger kar
+
+                    val createNotification = notification(context, "My title", "This is the content of notification. It's not so important right now!")
+                    createNotification.showNotification()
+                    GetLocation(context) { latitude, longitude ->
+                        Log.d("location12", "$latitude $longitude")
+                        createGeofenceAt(latitude, longitude, context)
+                    }
 
 
 
