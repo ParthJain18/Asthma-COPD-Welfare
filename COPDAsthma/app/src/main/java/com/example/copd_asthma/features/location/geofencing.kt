@@ -8,12 +8,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import com.example.copd_asthma.features.weatherApi.getData
-import com.example.copd_asthma.screens.SharedState
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
+
+val BackgroundAccessDenied = object : Exception("Background access was denied") {}
 
 class GeofenceHelper(private val context: Context) {
 
@@ -54,6 +54,7 @@ class GeofenceHelper(private val context: Context) {
             }
             addOnFailureListener {
                 Log.e(TAG, "Failed to add geofence: $requestId, Error: ${it.message}")
+                throw BackgroundAccessDenied
             }
             addOnCompleteListener {
                 Log.d(TAG, "Geofence completed: $requestId")

@@ -86,8 +86,8 @@ fun NavBar(onLogOut: ()-> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            askPerm = true
                             showPermissionDialog = false
+                            askPerm = true
                         }
                         .padding(10.dp),
                     textAlign = TextAlign.Center,
@@ -103,9 +103,18 @@ fun NavBar(onLogOut: ()-> Unit) {
         )
     }
 
-    if(!fineLocationPermState.status.isGranted){
-        showPermissionDialog = true
-        showCustomPermissionDialog()
+
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+        if(!fineLocationPermState.status.isGranted){
+            showPermissionDialog = true
+            showCustomPermissionDialog()
+        }
+    }
+    else {
+        if(!fineLocationPermState.status.isGranted || !backgroundLocationPermState.status.isGranted){
+            showPermissionDialog = true
+            showCustomPermissionDialog()
+        }
     }
 
     LaunchedEffect(askPerm) {
@@ -116,15 +125,19 @@ fun NavBar(onLogOut: ()-> Unit) {
             }
         }
         else {
-            try {
-                GetLocation(context) { latitude, longitude ->
-                Log.d("location12", "$latitude $longitude")
-                createGeofenceAt(latitude, longitude, context) }
+
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                try {
+                    GetLocation(context) { latitude, longitude ->
+                        Log.d("location12", "$latitude $longitude")
+                        createGeofenceAt(latitude, longitude, context) }
+                }
+                catch (e:  java.lang.SecurityException) {
+                    Log.d("permissions", e.toString())
+                    askPerm = false
+                }
             }
-            catch (e:  java.lang.SecurityException) {
-                Log.d("permissions", e.toString())
-                askPerm = false
-            }
+
         }
     }
 
