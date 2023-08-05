@@ -5,11 +5,8 @@ import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Build
-import androidx.annotation.RequiresApi
 
 @SuppressLint("MissingPermission")
-@RequiresApi(Build.VERSION_CODES.Q)
 fun GetLocation(context: Context, onLocationReceived: (Double, Double) -> Unit) {
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val locationListener = object : LocationListener {

@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,7 +47,6 @@ import com.parse.ParseUser
 
 
 
-@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun NavBar(onLogOut: ()-> Unit) {
@@ -68,7 +66,11 @@ fun NavBar(onLogOut: ()-> Unit) {
     val context = LocalContext.current
 
     val fineLocationPermState = rememberPermissionState(permission = Manifest.permission.ACCESS_FINE_LOCATION)
-    val backgroundLocationPermState = rememberPermissionState(permission = Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+    var backgroundLocationPermState = rememberPermissionState(permission = Manifest.permission.ACCESS_FINE_LOCATION)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        backgroundLocationPermState =
+            rememberPermissionState(permission = Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+    }
     var showPermissionDialog by remember { mutableStateOf(false) }
     var askPerm by remember { mutableStateOf(false) }
 
