@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,8 +72,20 @@ fun NavBar(onLogOut: ()-> Unit) {
         backgroundLocationPermState =
             rememberPermissionState(permission = Manifest.permission.ACCESS_BACKGROUND_LOCATION)
     }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val notificationPermState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+        if (!notificationPermState.status.isGranted) {
+            SideEffect {
+                notificationPermState.launchPermissionRequest()
+            }
+        }
+    }
+
     var showPermissionDialog by remember { mutableStateOf(false) }
     var askPerm by remember { mutableStateOf(false) }
+    var isLoggingOut by remember { mutableStateOf(false)}
 
 
     @Composable
@@ -103,17 +116,20 @@ fun NavBar(onLogOut: ()-> Unit) {
         )
     }
 
+    if (showPermissionDialog) {
+        showCustomPermissionDialog()
+    }
+
 
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
         if(!fineLocationPermState.status.isGranted){
             showPermissionDialog = true
-            showCustomPermissionDialog()
         }
     }
     else {
         if(!fineLocationPermState.status.isGranted || !backgroundLocationPermState.status.isGranted){
             showPermissionDialog = true
-            showCustomPermissionDialog()
+//            showCustomPermissionDialog()
         }
     }
 
@@ -127,6 +143,7 @@ fun NavBar(onLogOut: ()-> Unit) {
         else {
 
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                showPermissionDialog = false
                 try {
                     GetLocation(context) { latitude, longitude ->
                         Log.d("location12", "$latitude $longitude")
@@ -144,6 +161,7 @@ fun NavBar(onLogOut: ()-> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         LaunchedEffect(backgroundLocationPermState.status) {
             if (backgroundLocationPermState.status.isGranted) {
+                showPermissionDialog = false
                 try {
                     GetLocation(context) { latitude, longitude ->
                         Log.d("location12", "$latitude $longitude")
@@ -173,6 +191,14 @@ fun NavBar(onLogOut: ()-> Unit) {
 
 
 
+
+    if (isLoggingOut) {
+        AlertBox()
+    }
+
+
+
+
     Scaffold(
         modifier = Modifier.background(Brush.verticalGradient(colorStops = colorStops)),
         bottomBar = {
@@ -193,12 +219,15 @@ fun NavBar(onLogOut: ()-> Unit) {
                                 1 -> navController.navigate("settings")
                                 2 -> navController.navigate("profile")
                                 3 -> {
+                                    isLoggingOut = true
                                     ParseUser.logOutInBackground {
                                         if (it == null) {
                                             onLogOut()
                                             Log.d("logout", "No errors")
+                                            isLoggingOut = false
                                         } else {
                                             Log.d("logout", it.toString())
+                                            isLoggingOut = false
                                         }
                                     }
                                 }

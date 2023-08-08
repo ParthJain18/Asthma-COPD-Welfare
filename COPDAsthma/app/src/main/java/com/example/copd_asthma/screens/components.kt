@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.copd_asthma.R
 
 
@@ -186,7 +188,8 @@ fun CardContent(id: Int, label: String, value: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier = Modifier.weight(0.4f)
+            modifier = Modifier
+                .weight(0.4f)
                 .padding(start = 5.dp, end = 5.dp)
             ,
             contentAlignment = Alignment.Center,
@@ -198,7 +201,10 @@ fun CardContent(id: Int, label: String, value: String) {
             modifier = Modifier.size(120.dp)
         )
         }
-        Box(Modifier.fillMaxSize().weight(0.6f), contentAlignment = Alignment.Center) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .weight(0.6f), contentAlignment = Alignment.Center) {
             Column(
                 modifier = Modifier
                     .padding(start = 15.dp, end = 10.dp, top = 20.dp, bottom = 10.dp)
@@ -219,7 +225,47 @@ fun CardContent(id: Int, label: String, value: String) {
 
 }
 
+
+@Composable
+fun AlertBox() {
+    Dialog(
+        onDismissRequest = { },
+    ) {
+        Card(
+            modifier = Modifier
+                .height(100.dp)
+                .width(600.dp)
+            ,
+            colors = CardDefaults.cardColors(Color.White),
+            shape = RoundedCornerShape(20)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Box(modifier = Modifier
+                    .weight(3f),
+                    contentAlignment = Alignment.Center
+                    ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(40.dp)
+                    )
+                }
+                Text(
+                    text= "Logging Out...",
+                    modifier = Modifier
+                        .weight(7f)
+                        .padding(start = 15.dp),
+                    fontSize = 16.sp,
+                )
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun Preview2() {
+    AlertBox()
 }

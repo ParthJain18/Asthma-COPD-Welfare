@@ -337,6 +337,7 @@ fun HomeScreen(padding: PaddingValues) {
 
 
 
+
 //    val name = "Parth"
 //    val sever = "Severe"
 //    val fev1 = "78"
