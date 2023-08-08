@@ -19,12 +19,16 @@ import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
 
 
 class MainActivity : ComponentActivity() {
+
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             COPDAsthmaTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -33,7 +37,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
+
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,17 +52,19 @@ fun AppNavigator() {
     NavHost(navController, startDestination = startingScreen) {
         composable("LogInScreen") {
             LogInScreen(
-                onLogIn = { navController.navigate("NavBar") },
+                onLogIn = { navController.navigate("navbar") },
                 onSignUp = {navController.navigate("SignUpScreen")})
         }
         composable("SignUpScreen") {
-            SignUpScreen (onNavigate = { navController.navigate("NavBar") })
+            SignUpScreen (onNavigate = { navController.navigate("navbar") })
         }
         composable("NavBar")
              {
-            NavBar( onLogOut = { navController.navigate("LogInScreen") })
+            NavBar( onLogOut = {
+                navController.popBackStack()
+                navController.navigate("LogInScreen")
+            })
         }
-
     }
 
 }

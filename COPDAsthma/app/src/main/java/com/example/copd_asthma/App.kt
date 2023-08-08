@@ -35,7 +35,7 @@ class App : Application() {
         startingScreen = if (currentUser == null) {
             "LogInScreen"
         } else {
-            "NavBar"
+            "navbar"
         }
 
     }

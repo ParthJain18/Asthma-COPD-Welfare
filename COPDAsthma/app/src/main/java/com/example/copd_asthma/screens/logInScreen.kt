@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,8 +42,11 @@ import com.example.copd_asthma.features.authentication.logIn
 @Composable
 fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: () -> Unit) {
 
-    var userName by remember { mutableStateOf("") }
-    var userPass by remember { mutableStateOf("") }
+    var userName by remember { mutableStateOf("123@123") }
+    var userPass by remember { mutableStateOf("123") }
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
 
     val context = LocalContext.current
 
@@ -81,6 +87,7 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
             modifier
                 .padding(all = 10.dp)
                 .fillMaxWidth(),
+//            readOnly = true,
             maxLines = 1,
             label = { Text("Email") },
             colors = TextFieldDefaults.textFieldColors(containerColor = Color(233, 250, 233))
@@ -93,27 +100,43 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
                 .fillMaxWidth(),
             maxLines = 1,
             label = { Text("Password") },
-            colors = TextFieldDefaults.textFieldColors(containerColor = Color(233, 250, 233))
+            colors = TextFieldDefaults.textFieldColors(containerColor = Color(233, 250, 233)),
+            visualTransformation = PasswordVisualTransformation()
 
         )
 
         Button(
 
             onClick = {
+                isLoading = true
                 logIn(userName, userPass, context) {
                     if (it) {
                         onLogIn()
                     }
+                    isLoading = false
                 }
             },
             modifier
                 .padding(top = 30.dp)
                 .width(200.dp)
+                .height(60.dp)
+            ,
+            enabled = !isLoading
         ) {
-            Text(text = "Log In",
-                modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                fontSize = 20.sp
-            )
+            if (!isLoading) {
+                Text(
+                    text = "Log In",
+                    modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                    fontSize = 20.sp
+                )
+            }
+            else {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(vertical = 5.dp)
+                        .size(27.dp)
+                )
+            }
         }
         Text(
             text = "Forgot Password?",
