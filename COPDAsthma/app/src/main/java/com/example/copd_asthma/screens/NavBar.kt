@@ -45,7 +45,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.parse.ParseUser
-
+import java.util.Timer
+import kotlin.concurrent.schedule
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
@@ -223,8 +224,11 @@ fun NavBar(onLogOut: ()-> Unit) {
                                     ParseUser.logOutInBackground {
                                         if (it == null) {
                                             onLogOut()
-                                            Log.d("logout", "No errors")
-                                            isLoggingOut = false
+
+                                            Timer().schedule(500) {
+                                                Log.d("logout", "No errors")
+                                                isLoggingOut = false
+                                            }
                                         } else {
                                             Log.d("logout", it.toString())
                                             isLoggingOut = false
@@ -261,7 +265,7 @@ fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
         Log.d("location12", "$lat $lon")
         getData(lat, lon) { SharedState.responseObj = it }
         val geofenceHelper = GeofenceHelper(context)
-        geofenceHelper.addGeofence("GEOFENCE_1", lat, lon, 500f)
+        geofenceHelper.addGeofence("GEOFENCE_1", lat, lon, 50f)
     }
 }
 
