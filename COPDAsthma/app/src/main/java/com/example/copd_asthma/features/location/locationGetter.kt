@@ -1,7 +1,6 @@
 package com.example.copd_asthma.features.location
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.location.Location
 import android.widget.Toast
@@ -16,7 +15,7 @@ import com.google.android.gms.tasks.OnTokenCanceledListener
 @SuppressLint("MissingPermission")
 fun GetLocation(context: Context, onLocationReceived: (Double, Double) -> Unit) {
 
-    fusedLocationClient = LocationServices.getFusedLocationProviderClient(context as Activity)
+    fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
         override fun onCanceledRequested(p0: OnTokenCanceledListener) = CancellationTokenSource().token
