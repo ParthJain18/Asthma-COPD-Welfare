@@ -62,6 +62,11 @@ class GeofenceHelper(private val context: Context) {
             }
         }
     }
+    fun removeGeofence(geofenceIds: List<String>) {
+        geofencingClient.removeGeofences(geofenceIds).addOnSuccessListener {
+            Log.d(TAG,"geofence removed!")
+        }
+    }
 
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(

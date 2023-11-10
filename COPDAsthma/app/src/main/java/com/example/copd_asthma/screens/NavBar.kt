@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -224,6 +225,8 @@ fun NavBar(onLogOut: ()-> Unit) {
                                     ParseUser.logOutInBackground {
                                         if (it == null) {
                                             onLogOut()
+                                            val geofenceHelper = GeofenceHelper(context)
+                                            geofenceHelper.removeGeofence(listOf("GEOFENCE_1"))
 
                                             Timer().schedule(500) {
                                                 Log.d("logout", "No errors")
@@ -254,10 +257,12 @@ fun NavBar(onLogOut: ()-> Unit) {
 
     }
 
+
 }
 
 object SharedState {
     var responseObj by mutableStateOf<airQuality?>(null)
+    var geofenceCount by mutableIntStateOf(0)
 }
 
 fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
@@ -265,7 +270,6 @@ fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
         Log.d("location12", "$lat $lon")
         getData(lat, lon) { SharedState.responseObj = it }
         val geofenceHelper = GeofenceHelper(context)
-        geofenceHelper.addGeofence("GEOFENCE_1", lat, lon, 50f)
+        geofenceHelper.addGeofence("GEOFENCE_1", lat, lon, 1000f)
     }
 }
-

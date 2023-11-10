@@ -52,11 +52,17 @@ fun AppNavigator() {
     NavHost(navController, startDestination = startingScreen) {
         composable("LogInScreen") {
             LogInScreen(
-                onLogIn = { navController.navigate("navbar") },
+                onLogIn = {
+                    navController.popBackStack()
+                    navController.navigate("navbar")
+                          },
                 onSignUp = {navController.navigate("SignUpScreen")})
         }
         composable("SignUpScreen") {
-            SignUpScreen (onNavigate = { navController.navigate("navbar") })
+            SignUpScreen (onNavigate = {
+                navController.popBackStack()
+                navController.navigate("navbar")
+            })
         }
         composable("NavBar")
              {
@@ -66,6 +72,8 @@ fun AppNavigator() {
             })
         }
     }
+
+
 
 }
 

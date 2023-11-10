@@ -59,31 +59,65 @@ fun ColoredText(text1: String, size: TextUnit, fontWeight1: FontWeight, color: C
 
 @Composable
 fun Welcome(name: String) {
-    Column(modifier = Modifier.padding(top = 40.dp, start = 30.dp, end = 30.dp)) {
-        Row() {
-            Column(modifier = Modifier.weight(7f)) {
-                HeadingText(text1 = "Welcome!", size = 38.sp, fontWeight1 = FontWeight.Light)
-                Spacer(modifier = Modifier.heightIn(10.dp))
-                Box(modifier = Modifier.heightIn(max = 40.dp)) {
-                    HeadingText(text1 = name, size = 33.sp, fontWeight1 = FontWeight.ExtraBold)
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 26.dp, start = 20.dp, end = 20.dp)
+            .heightIn(min = 100.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .shadow(
+                elevation = 3.dp,
+                spotColor = Color(0x26000000),
+                ambientColor = Color(0x26000000)
+            )
+            .shadow(
+                elevation = 2.dp,
+                spotColor = Color(0x4D000000),
+                ambientColor = Color(0x4D000000)
+            )
+            .border(
+                width = 1.dp,
+                color = Color(0xFFDCDCDC),
+                shape = RoundedCornerShape(size = 16.dp)
+            ),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column(modifier = Modifier.padding(top = 40.dp, start = 30.dp, end = 30.dp)) {
+            Row() {
+                Column(modifier = Modifier.weight(7f)) {
+                    HeadingText(text1 = "Welcome!", size = 38.sp, fontWeight1 = FontWeight.Light)
+                    Spacer(modifier = Modifier.heightIn(10.dp))
+                    Box(modifier = Modifier.heightIn(max = 40.dp)) {
+                        HeadingText(text1 = name, size = 33.sp, fontWeight1 = FontWeight.ExtraBold)
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(3f)
+                        .fillMaxSize()
+                        .align(Alignment.CenterVertically)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.avatar_m_1),
+                        contentDescription = "avatar",
+                        modifier = Modifier
+                            .heightIn(80.dp)
+                            .fillMaxSize()
+                    )
                 }
             }
-            Box(modifier = Modifier
-                .weight(3f)
-                .fillMaxSize()
-                .align(Alignment.CenterVertically)) {
-                Image(
-                    painter = painterResource(id = R.drawable.avatar_m_1),
-                    contentDescription ="avatar",
-                    modifier = Modifier
-                        .heightIn(80.dp)
-                        .fillMaxSize()
-                )
-            }
-        }
-        Spacer(modifier = Modifier.heightIn(18.dp))
-        ColoredText(text1 = "PureAir: Stay Informed, Stay Healthy", size = 13.sp, fontWeight1 = FontWeight.Medium, Color(0xFF6B6B6B))
+            Spacer(modifier = Modifier.heightIn(18.dp))
+            ColoredText(
+                text1 = "PureAir: Stay Informed, Stay Healthy",
+                size = 13.sp,
+                fontWeight1 = FontWeight.Medium,
+                Color(0xFF6B6B6B)
+            )
+            Spacer(modifier = Modifier.heightIn(18.dp))
 
+
+        }
     }
 }
 

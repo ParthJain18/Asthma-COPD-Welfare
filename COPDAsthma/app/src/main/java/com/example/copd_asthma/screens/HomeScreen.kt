@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -320,29 +318,30 @@ import com.parse.ParseUser
 @Composable
 fun HomeScreen(padding: PaddingValues) {
 
-    val responseObj = SharedState.responseObj
+//    val responseObj = SharedState.responseObj
     val safety = "Safe"
 
     var isShowComp by remember { mutableStateOf(false)}
 
 
     val currentUser = ParseUser.getCurrentUser()
-    val name = currentUser?.get("name")?.toString()
-    val sever = currentUser?.get("severity")?.toString()
-    val fev1 = currentUser?.get("fev1")?.toString()
-    val fvc = currentUser?.get("fvc")?.toString()
-    val gender = currentUser?.get("gender")?.toString()
-    val age = currentUser?.get("age")?.toString()
+//    val name = currentUser?.get("name")?.toString()
+//    val sever = currentUser?.get("severity")?.toString()
+//    val fev1 = currentUser?.get("fev1")?.toString()
+//    val fvc = currentUser?.get("fvc")?.toString()
+//    val gender = currentUser?.get("gender")?.toString()
+//    val age = currentUser?.get("age")?.toString()
 
 
 
 
 
-//    val name = "Parth"
-//    val sever = "Severe"
-//    val fev1 = "78"
-//    val gender = "Male"
-//    val age = "18"
+    val name = "Parth"
+    val sever = "Severe"
+    val fev1 = "78"
+    val gender = "Male"
+    val age = "18"
+    val aqi = "5"
 
 
 //    var lat by remember { mutableStateOf<Double?>(null) }
@@ -385,13 +384,13 @@ fun HomeScreen(padding: PaddingValues) {
 
 
 
-    val aqi = responseObj?.myList?.get(0)?.main?.aqi.toString()
-    val co= responseObj?.myList?.get(0)?.components?.co.toString()
-    val no2 = responseObj?.myList?.get(0)?.components?.no2.toString()
-    val o3 = responseObj?.myList?.get(0)?.components?.o3.toString()
-    val pm10 = responseObj?.myList?.get(0)?.components?.pm10.toString()
-    val pm2_5 = responseObj?.myList?.get(0)?.components?.pm2_5.toString()
-    val so2 = responseObj?.myList?.get(0)?.components?.so2.toString()
+//    val aqi = responseObj?.myList?.get(0)?.main?.aqi.toString()
+//    val co= responseObj?.myList?.get(0)?.components?.co.toString()
+//    val no2 = responseObj?.myList?.get(0)?.components?.no2.toString()
+//    val o3 = responseObj?.myList?.get(0)?.components?.o3.toString()
+//    val pm10 = responseObj?.myList?.get(0)?.components?.pm10.toString()
+//    val pm2_5 = responseObj?.myList?.get(0)?.components?.pm2_5.toString()
+//    val so2 = responseObj?.myList?.get(0)?.components?.so2.toString()
 
     Column(
         modifier = Modifier
@@ -403,9 +402,9 @@ fun HomeScreen(padding: PaddingValues) {
         if (name != null) {
             Welcome(name)
         }
-        if (fev1 != null && fvc != null) {
-            FevCard(fev1, fvc)
-        }
+//        if (fev1 != null && fvc != null) {
+//            FevCard(fev1, fvc)
+//        }
         Box(modifier = Modifier.padding(start = 30.dp, top = 25.dp, bottom = 10.dp)) {
             HeadingText(
                 text1 = "Your COPD severity level is:",
@@ -504,19 +503,19 @@ fun HomeScreen(padding: PaddingValues) {
             )
         ) {
             Column(modifier = Modifier.padding(start = 30.dp, end = 30.dp)) {
-                Spacer(modifier = Modifier.heightIn(5.dp))
-                RowOfText("CO:  ", co)
-                Spacer(modifier = Modifier.heightIn(5.dp))
-                RowOfText("SO2:  ", so2)
-                Spacer(modifier = Modifier.heightIn(5.dp))
-                RowOfText("PM2.5:  ", pm2_5)
-                Spacer(modifier = Modifier.heightIn(5.dp))
-                RowOfText("PM10:  ", pm10)
-                Spacer(modifier = Modifier.heightIn(5.dp))
-                RowOfText("NO2:  ", no2)
-                Spacer(modifier = Modifier.heightIn(5.dp))
-                RowOfText("O3:  ", o3)
-                Spacer(modifier = Modifier.heightIn(20.dp))
+//                Spacer(modifier = Modifier.heightIn(5.dp))
+//                RowOfText("CO:  ", co)
+//                Spacer(modifier = Modifier.heightIn(5.dp))
+//                RowOfText("SO2:  ", so2)
+//                Spacer(modifier = Modifier.heightIn(5.dp))
+//                RowOfText("PM2.5:  ", pm2_5)
+//                Spacer(modifier = Modifier.heightIn(5.dp))
+//                RowOfText("PM10:  ", pm10)
+//                Spacer(modifier = Modifier.heightIn(5.dp))
+//                RowOfText("NO2:  ", no2)
+//                Spacer(modifier = Modifier.heightIn(5.dp))
+//                RowOfText("O3:  ", o3)
+//                Spacer(modifier = Modifier.heightIn(20.dp))
             }
         }
 
@@ -531,6 +530,7 @@ fun HomeScreen(padding: PaddingValues) {
 @Preview(showBackground = true)
 @Composable
 fun Preview1() {
+    HomeScreen(padding = PaddingValues(0.dp))
 }
 
 
