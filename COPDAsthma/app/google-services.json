@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "382497820645",
+    "project_id": "copd-asthma-welfare",
+    "storage_bucket": "copd-asthma-welfare.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382497820645:android:7fef8928bd10d897c3e90c",
+        "android_client_info": {
+          "package_name": "com.example.copd_asthma"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc9KAMs_1Z9hpzD-Gd_ww87umrjCeW614"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
