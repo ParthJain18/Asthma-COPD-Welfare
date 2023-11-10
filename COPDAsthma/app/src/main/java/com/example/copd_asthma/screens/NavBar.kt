@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,8 +55,8 @@ fun NavBar(onLogOut: ()-> Unit) {
 
 
     val navController = rememberNavController()
-    val items = listOf("Home", "Settings", "Profile", "Log Out")
-    val icons = listOf(Icons.Filled.Home, Icons.Filled.Settings, Icons.Filled.Person, Icons.Filled.ExitToApp)
+    val items = listOf("Home", "Settings", "Log Out")
+    val icons = listOf(Icons.Filled.Home, Icons.Filled.Settings, Icons.Filled.ExitToApp)
     val auth = FirebaseAuth.getInstance()
 
     val colorStops = arrayOf(
@@ -219,8 +218,8 @@ fun NavBar(onLogOut: ()-> Unit) {
                             when (index) {
                                 0 -> navController.navigate("home")
                                 1 -> navController.navigate("settings")
-                                2 -> navController.navigate("profile")
-                                3 -> {
+//                                2 -> navController.navigate("profile")
+                                2 -> {
                                     isLoggingOut = true
                                     val geofenceHelper = GeofenceHelper(context)
                                     geofenceHelper.removeGeofence(listOf("GEOFENCE_1"))
@@ -260,8 +259,8 @@ fun NavBar(onLogOut: ()-> Unit) {
             ) { HomeScreen(padding) }
             composable("settings"
             ) { SettingScreen(padding) }
-            composable("profile"
-            ) { ProfileScreen(padding) }
+//            composable("profile"
+//            ) { ProfileScreen(padding) }
         }
 
     }
