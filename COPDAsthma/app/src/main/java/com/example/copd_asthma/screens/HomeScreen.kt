@@ -1,6 +1,7 @@
 package com.example.copd_asthma.screens
 
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
@@ -27,11 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.parse.ParseUser
+import com.example.copd_asthma.features.authentication.SharedPreferencesManager
 
 
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -323,24 +325,29 @@ fun HomeScreen(padding: PaddingValues) {
 
     var isShowComp by remember { mutableStateOf(false)}
 
+    val sharedPrefManager = SharedPreferencesManager(LocalContext.current)
+    val currentUser by remember { mutableStateOf(sharedPrefManager.getUserData()) }
 
-    val currentUser = ParseUser.getCurrentUser()
-//    val name = currentUser?.get("name")?.toString()
+//    val currentUser = ParseUser.getCurrentUser()
+
+    val name = currentUser.getString("displayName","User")
+    val sever = currentUser.getString("severity","Healthy")
 //    val sever = currentUser?.get("severity")?.toString()
 //    val fev1 = currentUser?.get("fev1")?.toString()
 //    val fvc = currentUser?.get("fvc")?.toString()
 //    val gender = currentUser?.get("gender")?.toString()
 //    val age = currentUser?.get("age")?.toString()
 
+    Log.d("name", name.toString())
 
 
 
 
-    val name = "Parth"
-    val sever = "Severe"
-    val fev1 = "78"
-    val gender = "Male"
-    val age = "18"
+//    val name = "Parth"
+//    val sever = "Severe"
+//    val fev1 = "78"
+//    val gender = "Male"
+//    val age = "18"
     val aqi = "5"
 
 
@@ -522,6 +529,8 @@ fun HomeScreen(padding: PaddingValues) {
 
     }
 }
+
+
 
 
 

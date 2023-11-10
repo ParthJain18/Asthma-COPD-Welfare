@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,15 +40,16 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
     var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var userPass by remember { mutableStateOf("") }
-    var userAge by remember { mutableStateOf("") }
-    var packHistory by remember { mutableStateOf("") }
-    var fev1 by remember { mutableStateOf("") }
-    var fvc by remember { mutableStateOf("") }
-    var mwt1 by remember { mutableStateOf("") }
-    var mwt2 by remember { mutableStateOf("") }
-    var userGender by remember { mutableStateOf("") }
-    var userDiabetes by remember { mutableStateOf("") }
-    var userHypertension by remember { mutableStateOf("") }
+    var userLungHeath by remember { mutableStateOf("") }
+//    var userAge by remember { mutableStateOf("") }
+//    var packHistory by remember { mutableStateOf("") }
+//    var fev1 by remember { mutableStateOf("") }
+//    var fvc by remember { mutableStateOf("") }
+//    var mwt1 by remember { mutableStateOf("") }
+//    var mwt2 by remember { mutableStateOf("") }
+//    var userGender by remember { mutableStateOf("") }
+//    var userDiabetes by remember { mutableStateOf("") }
+//    var userHypertension by remember { mutableStateOf("") }
 
     val context = LocalContext.current
 
@@ -117,21 +116,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 visualTransformation = PasswordVisualTransformation()
 
             )
-
-            TextField(
-                value = userAge.trim(),
-                onValueChange = { userAge = it },
-
-                modifier
-                    .padding(all = 10.dp)
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                maxLines = 1,
-                label = { Text("Age") }
-            )
-
             Text(
-                text = "Enter Your Gender:",
+                text = "Your Lung Health:",
                 modifier
                     .padding(start = 15.dp, end = 10.dp, top = 10.dp)
                     .fillMaxWidth(),
@@ -139,11 +125,10 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 textAlign = TextAlign.Left
             )
 
-
-            val gender = listOf("Male", "Female", "other")
+            val lungHealth = listOf("Healthy", "Moderate", "Unhealthy")
             val (selected, onOptionSelect) = remember { mutableStateOf("") }
             Column {
-                gender.forEach { text ->
+                lungHealth.forEach { text ->
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -151,7 +136,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                                 selected = (text == selected),
                                 onClick = {
                                     onOptionSelect(text)
-                                    userGender = text
+                                    userLungHeath = text
 
                                 }
                             )
@@ -170,177 +155,236 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                     }
                 }
             }
-            Text(
-                text = "Do you have Diabetes?:",
-                modifier
-                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                    .fillMaxWidth(),
-                fontSize = 21.sp,
-                textAlign = TextAlign.Left
-            )
-
-            val diabetes = listOf("Yes", "No")
-            val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf("") }
-            Column {
-                diabetes.forEach { text ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = (text == diabetesSelect),
-                                onClick = {
-                                    onDiabetesSelect(text)
-                                    userDiabetes = text
-
-                                }
-                            )
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-
-                    ) {
-                        RadioButton(
-                            selected = (text == diabetesSelect),
-                            onClick = { onDiabetesSelect(text) }
-                        )
-
-                        Text(
-                            text = text,
-                            modifier = Modifier.padding(start = 16.dp),
-
-                            )
-
-                    }
-
-                }
-
-            }
-            Text(
-                text = "Do you have Hypertension?:",
-                modifier
-                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                    .fillMaxWidth(),
-                fontSize = 21.sp,
-                textAlign = TextAlign.Left
-            )
-
-            val hypertension = listOf("Yes", "No")
-            val (hyperSelect, onHyperSelect) = remember { mutableStateOf("") }
-            Column {
-                hypertension.forEach { text ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = (text == hyperSelect),
-                                onClick = {
-                                    onHyperSelect(text)
-                                    userHypertension = text
-                                }
-                            )
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-
-
-                    ) {
-                        RadioButton(
-                            selected = (text == hyperSelect),
-                            onClick = { onHyperSelect(text) }
-                        )
-                        Text(
-                            text = text,
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
-                    }
-                }
-            }
-
-
-            TextField(
-                value = packHistory.trim(),
-                onValueChange = { packHistory = it },
-                modifier
-                    .padding(all = 10.dp)
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-                maxLines = 1,
-                label = { Text("Cigarette Pack History") }
-            )
-
-            TextField(
-                value = fev1.trim(),
-                onValueChange = { fev1 = it },
-                modifier
-                    .padding(all = 10.dp)
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-                maxLines = 1,
-                label = { Text("FEV 1") }
-            )
-
-            TextField(
-                value = fvc.trim(),
-                onValueChange = { fvc = it },
-                modifier
-                    .padding(all = 10.dp)
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-                maxLines = 1,
-                label = { Text("FVC") }
-            )
-
-            TextField(
-                value = mwt1.trim(),
-                onValueChange = { mwt1 = it },
-                modifier
-                    .padding(all = 10.dp)
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-                maxLines = 1,
-                label = { Text("MWT 1") }
-            )
-
-            TextField(
-                value = mwt2,
-                onValueChange = { mwt2 = it
-                },
-
-                modifier
-                    .padding(all = 10.dp)
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-
-                maxLines = 1,
-
-                label = { Text("MWT 2") }
-
-            )
+//
+//            TextField(
+//                value = userAge.trim(),
+//                onValueChange = { userAge = it },
+//
+//                modifier
+//                    .padding(all = 10.dp)
+//                    .fillMaxWidth(),
+//                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+//                maxLines = 1,
+//                label = { Text("Age") }
+//            )
+//
+//            Text(
+//                text = "Enter Your Gender:",
+//                modifier
+//                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+//                    .fillMaxWidth(),
+//                fontSize = 21.sp,
+//                textAlign = TextAlign.Left
+//            )
+//
+//
+//            val gender = listOf("Male", "Female", "other")
+//            val (selected, onOptionSelect) = remember { mutableStateOf("") }
+//            Column {
+//                gender.forEach { text ->
+//                    Row(
+//                        Modifier
+//                            .fillMaxWidth()
+//                            .selectable(
+//                                selected = (text == selected),
+//                                onClick = {
+//                                    onOptionSelect(text)
+//                                    userGender = text
+//
+//                                }
+//                            )
+//                            .padding(horizontal = 16.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//
+//                    ) {
+//                        RadioButton(
+//                            selected = (text == selected),
+//                            onClick = { onOptionSelect(text) }
+//                        )
+//                        Text(
+//                            text = text,
+//                            modifier = Modifier.padding(start = 16.dp)
+//                        )
+//                    }
+//                }
+//            }
+//            Text(
+//                text = "Do you have Diabetes?:",
+//                modifier
+//                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+//                    .fillMaxWidth(),
+//                fontSize = 21.sp,
+//                textAlign = TextAlign.Left
+//            )
+//
+//            val diabetes = listOf("Yes", "No")
+//            val (diabetesSelect, onDiabetesSelect) = remember { mutableStateOf("") }
+//            Column {
+//                diabetes.forEach { text ->
+//                    Row(
+//                        Modifier
+//                            .fillMaxWidth()
+//                            .selectable(
+//                                selected = (text == diabetesSelect),
+//                                onClick = {
+//                                    onDiabetesSelect(text)
+//                                    userDiabetes = text
+//
+//                                }
+//                            )
+//                            .padding(horizontal = 16.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//
+//                    ) {
+//                        RadioButton(
+//                            selected = (text == diabetesSelect),
+//                            onClick = { onDiabetesSelect(text) }
+//                        )
+//
+//                        Text(
+//                            text = text,
+//                            modifier = Modifier.padding(start = 16.dp),
+//
+//                            )
+//
+//                    }
+//
+//                }
+//
+//            }
+//            Text(
+//                text = "Do you have Hypertension?:",
+//                modifier
+//                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+//                    .fillMaxWidth(),
+//                fontSize = 21.sp,
+//                textAlign = TextAlign.Left
+//            )
+//
+//            val hypertension = listOf("Yes", "No")
+//            val (hyperSelect, onHyperSelect) = remember { mutableStateOf("") }
+//            Column {
+//                hypertension.forEach { text ->
+//                    Row(
+//                        Modifier
+//                            .fillMaxWidth()
+//                            .selectable(
+//                                selected = (text == hyperSelect),
+//                                onClick = {
+//                                    onHyperSelect(text)
+//                                    userHypertension = text
+//                                }
+//                            )
+//                            .padding(horizontal = 16.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//
+//
+//                    ) {
+//                        RadioButton(
+//                            selected = (text == hyperSelect),
+//                            onClick = { onHyperSelect(text) }
+//                        )
+//                        Text(
+//                            text = text,
+//                            modifier = Modifier.padding(start = 16.dp)
+//                        )
+//                    }
+//                }
+//            }
+//
+//
+//            TextField(
+//                value = packHistory.trim(),
+//                onValueChange = { packHistory = it },
+//                modifier
+//                    .padding(all = 10.dp)
+//                    .fillMaxWidth(),
+//                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+//
+//                maxLines = 1,
+//                label = { Text("Cigarette Pack History") }
+//            )
+//
+//            TextField(
+//                value = fev1.trim(),
+//                onValueChange = { fev1 = it },
+//                modifier
+//                    .padding(all = 10.dp)
+//                    .fillMaxWidth(),
+//                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+//
+//                maxLines = 1,
+//                label = { Text("FEV 1") }
+//            )
+//
+//            TextField(
+//                value = fvc.trim(),
+//                onValueChange = { fvc = it },
+//                modifier
+//                    .padding(all = 10.dp)
+//                    .fillMaxWidth(),
+//                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+//
+//                maxLines = 1,
+//                label = { Text("FVC") }
+//            )
+//
+//            TextField(
+//                value = mwt1.trim(),
+//                onValueChange = { mwt1 = it },
+//                modifier
+//                    .padding(all = 10.dp)
+//                    .fillMaxWidth(),
+//                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+//
+//                maxLines = 1,
+//                label = { Text("MWT 1") }
+//            )
+//
+//            TextField(
+//                value = mwt2,
+//                onValueChange = { mwt2 = it
+//                },
+//
+//                modifier
+//                    .padding(all = 10.dp)
+//                    .fillMaxWidth(),
+//                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+//
+//                maxLines = 1,
+//
+//                label = { Text("MWT 2") }
+//
+//            )
 
 
             Button(
                 onClick = {
                     val user: Users?
-                    if (listOf(userName, email, userPass, packHistory, fev1, fvc, mwt1, mwt2, userGender, userDiabetes, userHypertension).any {it.isNotEmpty()}) {
-                        user = Users(
+//                    if (listOf(userName, email, userPass, packHistory, fev1, fvc, mwt1, mwt2, userGender, userDiabetes, userHypertension).any {it.isNotEmpty()}) {
+//                        user = Users(
+//                            userName,
+//                            email,
+//                            userPass,
+//                            age = userAge.toInt(),
+//                            packHistory = packHistory.toInt(),
+//                            fev1 = fev1.toDouble(),
+//                            fvc = fvc.toDouble(),
+//                            mwt1 = mwt1.toDouble(),
+//                            mwt2 = mwt2.toDouble(),
+//                            gender = userGender,
+//                            diabetes = userDiabetes,
+//                            hypertension = userHypertension
+//                    )
+                    user = if (listOf(userName, email, userPass, userLungHeath).any {it.isNotEmpty()}) {
+                        Users(
                             userName,
                             email,
                             userPass,
-                            age = userAge.toInt(),
-                            packHistory = packHistory.toInt(),
-                            fev1 = fev1.toDouble(),
-                            fvc = fvc.toDouble(),
-                            mwt1 = mwt1.toDouble(),
-                            mwt2 = mwt2.toDouble(),
-                            gender = userGender,
-                            diabetes = userDiabetes,
-                            hypertension = userHypertension
-                    )
-                }
-                else {
-                        user = null
+                            userLungHeath
+                        )
+                    } else {
+                        null
                     }
 
                 if (user != null) {

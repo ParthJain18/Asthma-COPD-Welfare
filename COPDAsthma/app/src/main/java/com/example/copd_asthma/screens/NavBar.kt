@@ -39,15 +39,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.copd_asthma.data.airQuality.airQuality
+import com.example.copd_asthma.features.authentication.SharedPreferencesManager
 import com.example.copd_asthma.features.location.GeofenceHelper
 import com.example.copd_asthma.features.location.GetLocation
 import com.example.copd_asthma.features.weatherApi.getData
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.parse.ParseUser
-import java.util.Timer
-import kotlin.concurrent.schedule
+import com.google.firebase.auth.FirebaseAuth
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
@@ -59,6 +58,7 @@ fun NavBar(onLogOut: ()-> Unit) {
     val navController = rememberNavController()
     val items = listOf("Home", "Settings", "Profile", "Log Out")
     val icons = listOf(Icons.Filled.Home, Icons.Filled.Settings, Icons.Filled.Person, Icons.Filled.ExitToApp)
+    val auth = FirebaseAuth.getInstance()
 
     val colorStops = arrayOf(
         0.0f to Color(0xFFEBFFE6),
@@ -222,21 +222,30 @@ fun NavBar(onLogOut: ()-> Unit) {
                                 2 -> navController.navigate("profile")
                                 3 -> {
                                     isLoggingOut = true
-                                    ParseUser.logOutInBackground {
-                                        if (it == null) {
-                                            onLogOut()
-                                            val geofenceHelper = GeofenceHelper(context)
-                                            geofenceHelper.removeGeofence(listOf("GEOFENCE_1"))
+                                    val geofenceHelper = GeofenceHelper(context)
+                                    geofenceHelper.removeGeofence(listOf("GEOFENCE_1"))
+                                    auth.signOut()
+                                    onLogOut()
+                                    val sharedPrefManager = SharedPreferencesManager(context)
+                                    sharedPrefManager.clearPreferences()
 
-                                            Timer().schedule(500) {
-                                                Log.d("logout", "No errors")
-                                                isLoggingOut = false
-                                            }
-                                        } else {
-                                            Log.d("logout", it.toString())
-                                            isLoggingOut = false
-                                        }
-                                    }
+
+//                                    ParseUser.logOutInBackground {
+//                                        if (it == null) {
+//                                            onLogOut()
+//                                            val geofenceHelper = GeofenceHelper(context)
+//                                            geofenceHelper.removeGeofence(listOf("GEOFENCE_1"))
+//
+//                                            Timer().schedule(500) {
+//                                                Log.d("logout", "No errors")
+//                                                isLoggingOut = false
+//                                            }
+//                                        } else {
+//                                            Log.d("logout", it.toString())
+//                                            isLoggingOut = false
+//                                        }
+//                                    }
+
                                 }
                             }
                         }
