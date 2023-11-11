@@ -360,9 +360,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
 
             Button(
                 onClick = {
-                    val user: Users?
-//                    if (listOf(userName, email, userPass, packHistory, fev1, fvc, mwt1, mwt2, userGender, userDiabetes, userHypertension).any {it.isNotEmpty()}) {
-//                        user = Users(
+
 //                            userName,
 //                            email,
 //                            userPass,
@@ -376,7 +374,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
 //                            diabetes = userDiabetes,
 //                            hypertension = userHypertension
 //                    )
-                    user = if (listOf(userName, email, userPass, userLungHeath).any {it.isNotEmpty()}) {
+                    val user: Users? = if (listOf(userName, email, userPass, userLungHeath).all { it.isNotBlank() }) {
                         Users(
                             userName,
                             email,
@@ -387,17 +385,21 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                         null
                     }
 
-                if (user != null) {
-                    signUp(user, context) {callback ->
-                        if (callback) {
-                            onNavigate()
+                    if (userName.isNullOrEmpty()||userPass.isNullOrEmpty()|| userPass .isNullOrEmpty())
+                    {
+                        Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()
+
+                    }
+                    else
+                    {
+                        if (user != null) {
+                            signUp(user, context) {callback ->
+                                if (callback) {
+                                    onNavigate()
+                                }
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()
-                }
 
 
                 },
