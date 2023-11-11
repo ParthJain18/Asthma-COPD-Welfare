@@ -51,6 +51,7 @@ fun HeadingText(text1: String, size: TextUnit, fontWeight1: FontWeight) {
 fun ColoredText(text1: String, size: TextUnit, fontWeight1: FontWeight, color: Color) {
     Text(
         text=text1,
+        modifier = Modifier.padding(top = 10.dp),
         fontSize = size,
         fontWeight = fontWeight1,
         color = color

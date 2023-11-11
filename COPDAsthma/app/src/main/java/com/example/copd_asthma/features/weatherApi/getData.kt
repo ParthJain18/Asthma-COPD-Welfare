@@ -17,7 +17,7 @@ fun getData(lat: Double, lon: Double, callback: (airQuality?) -> Unit) {
 
     Log.d("location", "$lat   $lon")
 
-        val retrofit = Retrofit.Builder()
+    val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .build()
@@ -32,7 +32,6 @@ fun getData(lat: Double, lon: Double, callback: (airQuality?) -> Unit) {
             Log.d("HTTPSuccess", responseBody!!.myList[0].components.co.toString())
             Log.d("HTTPSuccess", responseBody!!.myList[0].main.aqi.toString())
             callback(responseBody)
-
         }
 
         override fun onFailure(call: Call<airQuality>, t: Throwable) {
