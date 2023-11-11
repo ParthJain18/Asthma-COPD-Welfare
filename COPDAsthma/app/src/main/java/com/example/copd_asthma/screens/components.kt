@@ -48,10 +48,9 @@ fun HeadingText(text1: String, size: TextUnit, fontWeight1: FontWeight) {
     )
 }
 @Composable
-fun ColoredText(text1: String, size: TextUnit, fontWeight1: FontWeight, color: Color) {
+fun ColoredText(text1: String, size: TextUnit, fontWeight1: FontWeight, color: Color, modifier: Modifier = Modifier) {
     Text(
         text=text1,
-        modifier = Modifier.padding(top = 10.dp),
         fontSize = size,
         fontWeight = fontWeight1,
         color = color
@@ -85,7 +84,7 @@ fun Welcome(name: String) {
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(modifier = Modifier.padding(top = 40.dp, start = 30.dp, end = 30.dp)) {
-            Row() {
+            Row {
                 Column(modifier = Modifier.weight(7f)) {
                     HeadingText(text1 = "Welcome!", size = 38.sp, fontWeight1 = FontWeight.Light)
                     Spacer(modifier = Modifier.heightIn(10.dp))

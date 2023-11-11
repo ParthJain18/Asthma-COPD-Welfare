@@ -409,6 +409,7 @@ fun HomeScreen(padding: PaddingValues) {
     val pm10 = myList?.get(0)?.components?.pm10.toString()
     val pm2_5 = myList?.get(0)?.components?.pm2_5.toString()
     val so2 = myList?.get(0)?.components?.so2.toString()
+    val airQualityName = responseObj?.airQualityName.toString()
 
     Log.d("aqi", safety.toString())
 
@@ -464,7 +465,10 @@ fun HomeScreen(padding: PaddingValues) {
             Box(modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 10.dp)) {
                 HeadingText(
                     text1 = " Air Quality Index: " +
-                            (aqi ?: "Fetching.."),
+                            (((aqi.takeIf { it != "null" } ?: "") +
+                                    (airQualityName.takeIf { it != "null" } ?: ""))
+                                .takeIf { it.isNotBlank() }
+                                ?: "Fetching.."),
                     size = 20.sp,
                     fontWeight1 = FontWeight.Medium
                 )
@@ -532,6 +536,7 @@ fun HomeScreen(padding: PaddingValues) {
                     fontWeight1 = FontWeight.Medium
                 )
             }
+            Spacer(modifier = Modifier.heightIn(10.dp))
 
 
             Box(modifier = Modifier.padding(start = 30.dp)) {
@@ -547,6 +552,7 @@ fun HomeScreen(padding: PaddingValues) {
                 }
                 if (sever != null) {
                     ColoredText(
+                        modifier = Modifier.padding(top = 10.dp),
                         text1 = sever,
                         size = 27.sp,
                         fontWeight1 = FontWeight.Bold,

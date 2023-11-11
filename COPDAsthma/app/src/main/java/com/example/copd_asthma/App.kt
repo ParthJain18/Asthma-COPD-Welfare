@@ -62,7 +62,7 @@ class App : Application() {
 
         user?.uid?.let {
             db.collection("users")
-                .document(user.uid ?: "")
+                .document(user.uid)
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {

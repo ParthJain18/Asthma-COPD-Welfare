@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import java.sql.Timestamp
 
 class SharedPreferencesManager(private val context: Context) {
@@ -13,10 +14,15 @@ class SharedPreferencesManager(private val context: Context) {
 
     private val user = auth.currentUser
 
+    private val settings = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
 
     private val dataSharedPref = context.getSharedPreferences("DataToStore", Context.MODE_PRIVATE)
+
+    private val db = FirebaseFirestore.getInstance()
+
 
 
 
@@ -37,14 +43,13 @@ class SharedPreferencesManager(private val context: Context) {
     }
     fun syncData() {
 
-        val db = FirebaseFirestore.getInstance()
         val TAG = "syncData"
         var severity: String? = null
 
 
         user?.uid?.let {
             db.collection("users")
-                .document(user.uid ?: "")
+                .document(user.uid)
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
@@ -79,7 +84,8 @@ class SharedPreferencesManager(private val context: Context) {
                   city: String? = null,
                   aqi: String? = null,
                   safety: String? = null,
-                  time: String? = null) {
+                  time: String? = null,
+                  airQualityName: String? = null) {
         val editor = dataSharedPref.edit()
 
         editor.putString("uid", uid ?: dataSharedPref.getString("uid", ""))
@@ -91,7 +97,41 @@ class SharedPreferencesManager(private val context: Context) {
         editor.putString("lon", coords?.getOrNull(1)?.toString() ?: dataSharedPref.getString("lon", ""))
         editor.putString("safety", safety ?: dataSharedPref.getString("safety", ""))
         editor.putString("time", time ?: dataSharedPref.getString("time", ""))
+        editor.putString("airQualityName", airQualityName ?: dataSharedPref.getString("airQualityName", ""))
 
         editor.apply()
     }
+
+    fun setSettings(
+        severity: String? = null,
+        radius: String? = null,
+        ) {
+        val editor = settings.edit()
+        editor.putString("severity", severity ?: settings.getString("severity", ""))
+        editor.putString("radius", radius ?: settings.getString("radius", ""))
+        editor.apply()
+
+        storeData(severity = severity)
+
+        user?.uid?.let {
+            db.collection("users")
+                .document(user.uid)
+                .set(
+                    hashMapOf(
+                        "severity" to severity
+                    ),
+                    SetOptions.merge()
+                )
+        }
+
+        syncData()
+
+
+
+    }
+
+    fun getSettings(): SharedPreferences {
+        return context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+    }
+
 }

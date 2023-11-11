@@ -72,12 +72,12 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
 
 
             Text(
-                text = "Please Enter Your Spirometry Results:",
+                text = "Please Enter your Details",
                 modifier
-                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
+                    .padding(start = 15.dp, end = 15.dp, top = 15.dp)
                     .fillMaxWidth(),
                 fontSize = 21.sp,
-                textAlign = TextAlign.Left
+                textAlign = TextAlign.Center
 
             )
             Spacer(

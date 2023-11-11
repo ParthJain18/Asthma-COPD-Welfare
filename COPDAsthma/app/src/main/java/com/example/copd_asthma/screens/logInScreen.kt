@@ -1,5 +1,6 @@
 package com.example.copd_asthma.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -36,19 +37,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.R
 import com.example.copd_asthma.features.authentication.logIn
+import com.google.firebase.auth.FirebaseAuth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: () -> Unit) {
 
-    var userName by remember { mutableStateOf("123@123") }
-    var userPass by remember { mutableStateOf("123") }
+    var userName by remember { mutableStateOf("") }
+    var userPass by remember { mutableStateOf("") }
     var isLoading by remember {
         mutableStateOf(false)
     }
 
     val context = LocalContext.current
+    val auth = FirebaseAuth.getInstance()
+
 
 
 
@@ -141,7 +145,13 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
         Text(
             text = "Forgot Password?",
             modifier
-                .padding( top = 7.dp),
+                .padding( top = 7.dp)
+                .clickable(onClick = {
+                    auth.sendPasswordResetEmail(userName)
+                    Toast.makeText(context, "Password reset email sent", Toast.LENGTH_SHORT).show()
+                })
+
+            ,
             fontSize = 14.sp,
             textAlign = TextAlign.Center
         )
