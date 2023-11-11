@@ -19,9 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,14 +31,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.copd_asthma.features.authentication.SharedPreferencesManager
 
 @Composable
 fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
-    var userSeverity by remember { mutableStateOf("") }
-    var userGeoFenceRadius by remember { mutableStateOf("") }
+
+    val sharedPrefManager = SharedPreferencesManager(LocalContext.current)
+    val settings = sharedPrefManager.getSettings().all
+    val severity = sharedPrefManager.getUserData().getString("severity", "Healthy")
+    var userSeverity by remember { mutableStateOf(severity ?: "Healthy") }
+    Log.d("radius", settings["radius"].toString())
+    var userGeoFenceRadius by remember {
+        mutableStateOf(settings["radius"].toString().takeIf { it != "null"} ?: "3 Kms")
+    }
+
 
     Column(
 
@@ -88,7 +96,6 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
                     color = Color(0xFFDCDCDC),
                     shape = RoundedCornerShape(size = 16.dp)
                 ),
-
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Text(
@@ -99,11 +106,10 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
                 fontSize = 25.sp,
                 textAlign = TextAlign.Left
             )
-
-            val severity = listOf("Healthy", "Moderate", "UnHealthy")
-            val (severitySelect, onSeveritySelect) = remember { mutableStateOf("") }
+            val severityList = listOf("Healthy", "Moderate", "Unhealthy")
+            val (severitySelect, onSeveritySelect) = remember { mutableStateOf(userSeverity) }
             Column {
-                severity.forEach { text ->
+                severityList.forEach { text ->
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -167,10 +173,10 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
                 textAlign = TextAlign.Left
             )
 
-            val radius = listOf("3 Kms", "5 Kms", "10 Kms")
-            val (radiusSelect, onradiusSelect) = remember { mutableStateOf("") }
+            val radiusList = listOf("3 Kms", "5 Kms", "10 Kms")
+            val (radiusSelect, onradiusSelect) = remember { mutableStateOf(userGeoFenceRadius) }
             Column {
-                radius.forEach { text ->
+                radiusList.forEach { text ->
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -212,8 +218,7 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
 
             Button(
                 onClick = {
-
-
+                    sharedPrefManager.setSettings(severity = userSeverity, radius = userGeoFenceRadius)
                 },
                 modifier = Modifier
                     .height(50.dp)
@@ -222,6 +227,7 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
             ) {
                 Text("Update Settings")
             }
+
         }
     }
     Spacer(

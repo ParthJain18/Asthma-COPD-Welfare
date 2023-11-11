@@ -155,7 +155,7 @@ fun NavBar(onLogOut: ()-> Unit) {
 
                     }
                 }
-                catch (e:  java.lang.SecurityException) {
+                catch (e:  SecurityException) {
                     Log.d("permissions", e.toString())
                     askPerm = false
                 }
@@ -173,7 +173,7 @@ fun NavBar(onLogOut: ()-> Unit) {
                         Log.d("location12", "$latitude $longitude")
                         createGeofenceAt(latitude, longitude, context)
                     }
-                } catch (e: java.lang.SecurityException) {
+                } catch (e: SecurityException) {
                     Log.d("permissions", e.toString())
                     askPerm = false
                 }
@@ -291,15 +291,24 @@ fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
 
             SharedState.responseObj = it
             val safety = when (SharedState.responseObj?.myList?.get(0)?.main?.aqi) {
-                5 -> "Safe"
-                4 -> "Safe"
+                1 -> "Safe"
+                2 -> "Safe"
                 3 -> "Moderate"
-                2 -> "Moderate"
-                1 -> "Unsafe"
+                4 -> "Moderate"
+                5 -> "Unsafe"
+                else -> "Unknown"
+            }
+            val airQualityName = when (SharedState.responseObj?.myList?.get(0)?.main?.aqi) {
+                5 -> "Very Poor"
+                4 -> "Poor"
+                3 -> "Moderate"
+                2 -> "Fair"
+                1 -> "Good"
                 else -> "Unknown"
             }
             if (SharedState.responseObj != null) {
                 SharedState.responseObj!!.safety = safety
+                SharedState.responseObj!!.airQualityName = " ($airQualityName)"
             }
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -314,8 +323,14 @@ fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
             Log.d("shared_2", sharedPrefManager.getStoredData().all.toString())
 
         }
+        val radius = (sharedPrefManager
+            .getSettings()
+            .getString("radius", "3 Kms") ?. split(" ")?.get(0) + "000").toFloat()
+
+        Log.d("radius", radius.toString())
+
         val geofenceHelper = GeofenceHelper(context)
-        geofenceHelper.addGeofence("GEOFENCE_1", lat, lon, 1000f)
+        geofenceHelper.addGeofence("GEOFENCE_1", lat, lon, radius)
     }
 }
 

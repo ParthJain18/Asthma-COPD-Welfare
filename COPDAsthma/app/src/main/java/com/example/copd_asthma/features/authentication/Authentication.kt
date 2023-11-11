@@ -49,7 +49,7 @@ fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
                             user?.updateProfile(profileUpdates)
                                 ?.addOnCompleteListener { profileUpdateTask ->
                                     if (profileUpdateTask.isSuccessful) {
-                                        db.collection("users").document(user.uid ?: "")
+                                        db.collection("users").document(user.uid)
                                             .set(mapOf("severity" to userObj.userLungHealth))
                                             .addOnSuccessListener {
                                                 Log.d(TAG, "User profile and metadata updated.")
@@ -143,7 +143,7 @@ fun logIn(uname: String, pword: String, context: Context, callback: (Boolean) ->
 
 
     auth.signInWithEmailAndPassword(uname, pword)
-        .addOnCompleteListener() { task ->
+        .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d(TAG, "signInWithEmail:success")
