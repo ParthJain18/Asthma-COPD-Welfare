@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,7 +46,9 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
@@ -274,7 +275,6 @@ fun NavBar(onLogOut: ()-> Unit) {
 
 object SharedState {
     var responseObj by mutableStateOf<airQuality?>(null)
-    var geofenceCount by mutableIntStateOf(0)
 }
 
 fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
@@ -289,7 +289,6 @@ fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
 
         getData(lat, lon) { it ->
 
-
             SharedState.responseObj = it
             val safety = when (SharedState.responseObj?.myList?.get(0)?.main?.aqi) {
                 5 -> "Safe"
@@ -303,12 +302,9 @@ fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
                 SharedState.responseObj!!.safety = safety
             }
 
-            runBlocking {
+            CoroutineScope(Dispatchers.IO).launch {
                 storeCityNameFromLatLngAsync(context, lat, lon)
             }
-
-
-
 
             sharedPrefManager.storeData(
                 aqi = SharedState.responseObj?.myList?.get(0)?.main?.aqi.toString(),

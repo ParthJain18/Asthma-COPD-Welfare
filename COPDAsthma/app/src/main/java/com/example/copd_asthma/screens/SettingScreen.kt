@@ -36,7 +36,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.copd_asthma.screens.SharedState.geofenceCount
 
 @Composable
 fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {

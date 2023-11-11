@@ -22,12 +22,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.features.authentication.SharedPreferencesManager
-import com.example.copd_asthma.features.utils.FirestoreManager
 
 
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -472,15 +469,6 @@ fun HomeScreen(padding: PaddingValues) {
                     fontWeight1 = FontWeight.Medium
                 )
             }
-
-            Button(onClick = {
-                val firestoreManager = FirestoreManager()
-                val data = sharedPrefManager.getStoredData().all
-                firestoreManager.storeData(data)
-            }) {
-                Text(text = "Button")
-            }
-
             Box(
                 modifier = Modifier.padding(start = 30.dp, top = 0.dp),
                 contentAlignment = Alignment.Center
