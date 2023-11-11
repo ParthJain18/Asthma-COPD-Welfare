@@ -385,7 +385,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                         null
                     }
 
-                    if (userName.isNullOrEmpty()||userPass.isNullOrEmpty()|| userPass .isNullOrEmpty())
+                    if (userName.isEmpty()||userPass.isEmpty()|| userPass .isEmpty())
                     {
                         Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()
 

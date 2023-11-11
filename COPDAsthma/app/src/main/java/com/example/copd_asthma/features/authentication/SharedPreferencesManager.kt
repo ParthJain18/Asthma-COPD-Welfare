@@ -16,8 +16,13 @@ class SharedPreferencesManager(private val context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
 
+    private val dataSharedPref = context.getSharedPreferences("DataToStore", Context.MODE_PRIVATE)
+
+
+
     fun clearPreferences() {
         sharedPreferences.edit().clear().apply()
+        dataSharedPref.edit().clear().apply()
     }
     fun getUserData(): SharedPreferences {
         return context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
@@ -75,7 +80,6 @@ class SharedPreferencesManager(private val context: Context) {
                   aqi: String? = null,
                   safety: String? = null,
                   time: String? = null) {
-        val dataSharedPref = context.getSharedPreferences("DataToStore", Context.MODE_PRIVATE)
         val editor = dataSharedPref.edit()
 
         editor.putString("uid", uid ?: dataSharedPref.getString("uid", ""))
