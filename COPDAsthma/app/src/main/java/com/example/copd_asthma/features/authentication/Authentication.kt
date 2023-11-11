@@ -13,52 +13,64 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 private lateinit var auth: FirebaseAuth
 
-
 fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
-
-//    val user = ParseUser()
-//    user.put("name", userObj.name)
-//    user.username = userObj.email
-//    user.email = userObj.email
-//    user.setPassword(userObj.password)
     val TAG = "signUp"
-    auth = Firebase.auth
+    val auth = Firebase.auth
     val db = FirebaseFirestore.getInstance()
 
+    // Validate email and password
+    if (userObj.email.isNullOrEmpty() || userObj.password.isNullOrEmpty()) {
+        if (userObj.email.isNullOrEmpty()) {
+            Log.e(TAG, "Email is empty or null")
+        }
+        if (userObj.password.isNullOrEmpty()) {
+            Log.e(TAG, "Password is empty or null")
+        }
+        callback(false)
+        return
+    }
 
+    // Check for duplicate email
+    db.collection("users")
+        .whereEqualTo("email", userObj.email)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents.isEmpty) {
+                // No user with the same email, proceed with user registration
+                auth.createUserWithEmailAndPassword(userObj.email, userObj.password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val user = auth.currentUser
 
+                            val profileUpdates = UserProfileChangeRequest.Builder()
+                                .setDisplayName(userObj.name)
+                                .build()
 
-
-    auth.createUserWithEmailAndPassword(userObj.email, userObj.password)
-        .addOnCompleteListener() { task ->
-            if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
-                Log.d(TAG, "createUserWithEmail:success")
-                val user = auth.currentUser
-
-
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(userObj.name)
-                    .build()
-
-                user?.updateProfile(profileUpdates)
-                    ?.addOnCompleteListener { profileUpdateTask ->
-                        if (profileUpdateTask.isSuccessful) {
-
-                            db.collection("users").document(user.uid ?: "")
-                                .set(mapOf("severity" to userObj.userLungHealth))
-                                .addOnSuccessListener {
-                                    Log.d(TAG, "User profile and metadata updated.")
-                                    val sharedPrefManager = SharedPreferencesManager(context)
-                                    sharedPrefManager.syncData()
-                                    callback(true)
+                            user?.updateProfile(profileUpdates)
+                                ?.addOnCompleteListener { profileUpdateTask ->
+                                    if (profileUpdateTask.isSuccessful) {
+                                        db.collection("users").document(user.uid ?: "")
+                                            .set(mapOf("severity" to userObj.userLungHealth))
+                                            .addOnSuccessListener {
+                                                Log.d(TAG, "User profile and metadata updated.")
+                                                val sharedPrefManager = SharedPreferencesManager(context)
+                                                sharedPrefManager.syncData()
+                                                callback(true)
+                                            }
+                                            .addOnFailureListener {
+                                                Log.w(TAG, "Failed to update user metadata in Firestore.", it)
+                                                callback(false)
+                                            }
+                                    } else {
+                                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                                        Toast.makeText(
+                                            context,
+                                            "Authentication failed.",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                        callback(false)
+                                    }
                                 }
-                                .addOnFailureListener {
-                                    Log.w(TAG, "Failed to update user metadata in Firestore.", it)
-                                }
-
-                            callback(true)
-
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
                             Toast.makeText(
@@ -69,6 +81,27 @@ fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
                             callback(false)
                         }
                     }
+            } else {
+                // User with the same email already exists
+                Log.e(TAG, "User with the same email already exists")
+                Toast.makeText(
+                    context,
+                    "User with the same email already exists.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                callback(false)
+            }
+        }
+        .addOnFailureListener { exception ->
+            Log.e(TAG, "Error checking for duplicate email", exception)
+            callback(false)
+        }
+}
+
+
+
+
+
 
 
 //    user.put("age", userObj.age)
@@ -97,10 +130,10 @@ fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
 //            callback(false)
 //
 //        }
-//    }
-            }
-        }
-}
+//
+
+
+
 
 
 fun logIn(uname: String, pword: String, context: Context, callback: (Boolean) ->Unit) {
