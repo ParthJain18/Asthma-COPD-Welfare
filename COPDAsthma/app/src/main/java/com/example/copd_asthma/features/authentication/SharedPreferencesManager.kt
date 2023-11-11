@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.sql.Timestamp
 
 class SharedPreferencesManager(private val context: Context) {
 
@@ -20,6 +21,14 @@ class SharedPreferencesManager(private val context: Context) {
     }
     fun getUserData(): SharedPreferences {
         return context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
+    }
+
+    fun getStoredData(): SharedPreferences {
+        val time = Timestamp(System.currentTimeMillis()).toString()
+        Log.d("time", time)
+        storeData(time = time)
+
+        return context.getSharedPreferences("DataToStore", Context.MODE_PRIVATE)
     }
     fun syncData() {
 
@@ -56,5 +65,29 @@ class SharedPreferencesManager(private val context: Context) {
                     Log.w(TAG, "Error getting document", exception)
                 }
         }
+    }
+
+    fun storeData(uid: String? = null,
+                  email: String? = null,
+                  severity: String? = null,
+                  coords: List<Double>? = null,
+                  city: String? = null,
+                  aqi: String? = null,
+                  safety: String? = null,
+                  time: String? = null) {
+        val dataSharedPref = context.getSharedPreferences("DataToStore", Context.MODE_PRIVATE)
+        val editor = dataSharedPref.edit()
+
+        editor.putString("uid", uid ?: dataSharedPref.getString("uid", ""))
+        editor.putString("email", email ?: dataSharedPref.getString("email", ""))
+        editor.putString("severity", severity ?: dataSharedPref.getString("severity", ""))
+        editor.putString("city", city ?: dataSharedPref.getString("city", ""))
+        editor.putString("aqi", aqi ?: dataSharedPref.getString("aqi", ""))
+        editor.putString("lat", coords?.getOrNull(0)?.toString() ?: dataSharedPref.getString("lat", ""))
+        editor.putString("lon", coords?.getOrNull(1)?.toString() ?: dataSharedPref.getString("lon", ""))
+        editor.putString("safety", safety ?: dataSharedPref.getString("safety", ""))
+        editor.putString("time", time ?: dataSharedPref.getString("time", ""))
+
+        editor.apply()
     }
 }

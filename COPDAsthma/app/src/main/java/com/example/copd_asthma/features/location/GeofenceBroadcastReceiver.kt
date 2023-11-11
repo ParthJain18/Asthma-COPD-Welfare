@@ -7,8 +7,8 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.copd_asthma.features.authentication.SharedPreferencesManager
 import com.example.copd_asthma.features.notification.notification
-import com.example.copd_asthma.screens.SharedState.geofenceCount
 import com.example.copd_asthma.screens.createGeofenceAt
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
@@ -47,14 +47,24 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                     val requestId = geofence.requestId
                     Log.d(TAG, "Geofence transition detected for: $requestId")
 
-                    val createNotification = notification(context, "My title", "This is the content of notification. It's not so important right now!")
-                    createNotification.showNotification()
-                    geofenceCount += 1
                     GetLocation(context) { latitude, longitude ->
                         Log.d("location12", "$latitude $longitude")
                         createGeofenceAt(latitude, longitude, context)
                     }
 
+                    val sharedPrefManager = SharedPreferencesManager(context)
+
+                    val data = sharedPrefManager.getStoredData().all
+
+                    val aqi = data["aqi"].toString()
+
+                    if (aqi in listOf("1", "2", "3", "4", "5")) {
+                        val createNotification = notification(context, "Bad Air Quality", "Current AQI is $aqi. Please avoid going outside.")
+                        createNotification.showNotification()
+
+//                        saveDataToFirestore(context, data)
+
+                    }
 
 
 

@@ -20,13 +20,8 @@ import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
 
 class MainActivity : ComponentActivity() {
 
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             COPDAsthmaTheme {
                 Surface(
@@ -37,12 +32,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 }
-
-
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -22,10 +22,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.features.authentication.SharedPreferencesManager
-import com.example.copd_asthma.screens.SharedState.responseObj
+import com.example.copd_asthma.features.utils.FirestoreManager
 
 
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -330,8 +332,8 @@ import com.example.copd_asthma.screens.SharedState.responseObj
 @Composable
 fun HomeScreen(padding: PaddingValues) {
 
-//    val responseObj = SharedState.responseObj
-    val safety = "Safe"
+    val responseObj = SharedState.responseObj
+//    val safety = "Safe"
 
     var isShowComp by remember { mutableStateOf(false)}
 
@@ -341,7 +343,7 @@ fun HomeScreen(padding: PaddingValues) {
 //    val currentUser = ParseUser.getCurrentUser()
 
     val name = currentUser.getString("displayName","User")
-    val sever = currentUser.getString("severity","Collecting..")
+    val sever = currentUser.getString("severity","Fetching..")
 
 //    val sever = currentUser?.get("severity")?.toString()
 //    val fev1 = currentUser?.get("fev1")?.toString()
@@ -401,14 +403,26 @@ fun HomeScreen(padding: PaddingValues) {
 
 
 
+    val myList = responseObj?.myList
+    val aqi = myList?.get(0)?.main?.aqi.toString()
+    val safety = responseObj?.safety
+    val co= myList?.get(0)?.components?.co.toString()
+    val no2 = myList?.get(0)?.components?.no2.toString()
+    val o3 = myList?.get(0)?.components?.o3.toString()
+    val pm10 = myList?.get(0)?.components?.pm10.toString()
+    val pm2_5 = myList?.get(0)?.components?.pm2_5.toString()
+    val so2 = myList?.get(0)?.components?.so2.toString()
 
-    val aqi = responseObj?.myList?.get(0)?.main?.aqi.toString()
-    val co= responseObj?.myList?.get(0)?.components?.co.toString()
-    val no2 = responseObj?.myList?.get(0)?.components?.no2.toString()
-    val o3 = responseObj?.myList?.get(0)?.components?.o3.toString()
-    val pm10 = responseObj?.myList?.get(0)?.components?.pm10.toString()
-    val pm2_5 = responseObj?.myList?.get(0)?.components?.pm2_5.toString()
-    val so2 = responseObj?.myList?.get(0)?.components?.so2.toString()
+    Log.d("aqi", safety.toString())
+
+    sharedPrefManager.storeData(
+        uid = currentUser.getString("uid", "")!!,
+        email = currentUser.getString("email", "")!!,
+        severity = currentUser.getString("severity", "")!!
+    )
+
+    Log.d("shared", sharedPrefManager.getStoredData().getString("lat", "")!!)
+
 
     Column(
         modifier = Modifier
@@ -423,6 +437,8 @@ fun HomeScreen(padding: PaddingValues) {
 //        if (fev1 != null && fvc != null) {
 //            FevCard(fev1, fvc)
 //        }
+
+
 
         Card(
             modifier = Modifier
@@ -451,11 +467,20 @@ fun HomeScreen(padding: PaddingValues) {
             Box(modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 10.dp)) {
                 HeadingText(
                     text1 = " Air Quality Index: " +
-                            "$aqi",
+                            (aqi ?: "Fetching.."),
                     size = 20.sp,
                     fontWeight1 = FontWeight.Medium
                 )
             }
+
+            Button(onClick = {
+                val firestoreManager = FirestoreManager()
+                val data = sharedPrefManager.getStoredData().all
+                firestoreManager.storeData(data)
+            }) {
+                Text(text = "Button")
+            }
+
             Box(
                 modifier = Modifier.padding(start = 30.dp, top = 0.dp),
                 contentAlignment = Alignment.Center
@@ -463,9 +488,8 @@ fun HomeScreen(padding: PaddingValues) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val color: Color = when (safety) {
                         "Safe" -> Color(25, 179, 103, 255)
-                        "Mildly Hazardous" -> Color(255, 170, 51)
-                        "Hazardous" -> Color(255, 87, 51, 228)
-                        "Very Severe" -> Color(210, 4, 45)
+                        "Moderate" -> Color(255, 170, 51)
+                        "Unsafe" -> Color(210, 4, 45)
 
                         else -> {
                             Color.Black
@@ -481,11 +505,12 @@ fun HomeScreen(padding: PaddingValues) {
                         )
                     }
                     ColoredText(
-                        text1 = safety,
+                        text1 = safety ?: "Fetching..",
                         size = 22.sp,
                         fontWeight1 = FontWeight.ExtraBold,
                         color = color
                     )
+
                 }
             }
         }
@@ -523,10 +548,10 @@ fun HomeScreen(padding: PaddingValues) {
 
             Box(modifier = Modifier.padding(start = 30.dp)) {
                 val color: Color = when (sever) {
-                    "Mild" -> Color(25, 179, 103, 255)
+                    "Healthy" -> Color(25, 179, 103, 255)
                     "Moderate" -> Color(255, 170, 51)
-                    "Severe" -> Color(255, 87, 51, 228)
-                    "Very Severe" -> Color(210, 4, 45)
+                    "Unhealthy" -> Color(255, 87, 51, 228)
+//                    "Very Severe" -> Color(210, 4, 45)
 
                     else -> {
                         Color.Black
@@ -535,7 +560,7 @@ fun HomeScreen(padding: PaddingValues) {
                 if (sever != null) {
                     ColoredText(
                         text1 = sever,
-                        size = 30.sp,
+                        size = 27.sp,
                         fontWeight1 = FontWeight.Bold,
                         color = color
                     )

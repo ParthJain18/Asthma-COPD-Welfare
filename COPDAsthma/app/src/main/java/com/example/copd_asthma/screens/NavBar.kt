@@ -41,11 +41,13 @@ import com.example.copd_asthma.data.airQuality.airQuality
 import com.example.copd_asthma.features.authentication.SharedPreferencesManager
 import com.example.copd_asthma.features.location.GeofenceHelper
 import com.example.copd_asthma.features.location.GetLocation
+import com.example.copd_asthma.features.location.storeCityNameFromLatLngAsync
 import com.example.copd_asthma.features.weatherApi.getData
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.runBlocking
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
@@ -148,7 +150,9 @@ fun NavBar(onLogOut: ()-> Unit) {
                 try {
                     GetLocation(context) { latitude, longitude ->
                         Log.d("location12", "$latitude $longitude")
-                        createGeofenceAt(latitude, longitude, context) }
+                        createGeofenceAt(latitude, longitude, context)
+
+                    }
                 }
                 catch (e:  java.lang.SecurityException) {
                     Log.d("permissions", e.toString())
@@ -276,8 +280,46 @@ object SharedState {
 fun createGeofenceAt(lat: Double?, lon: Double?, context: Context) {
     if (lat != null && lon != null) {
         Log.d("location12", "$lat $lon")
-        getData(lat, lon) { SharedState.responseObj = it }
+
+        val sharedPrefManager = SharedPreferencesManager(context)
+
+        Log.d("shared_1", sharedPrefManager.getStoredData().all.toString())
+
+
+
+        getData(lat, lon) { it ->
+
+
+            SharedState.responseObj = it
+            val safety = when (SharedState.responseObj?.myList?.get(0)?.main?.aqi) {
+                5 -> "Safe"
+                4 -> "Safe"
+                3 -> "Moderate"
+                2 -> "Moderate"
+                1 -> "Unsafe"
+                else -> "Unknown"
+            }
+            if (SharedState.responseObj != null) {
+                SharedState.responseObj!!.safety = safety
+            }
+
+            runBlocking {
+                storeCityNameFromLatLngAsync(context, lat, lon)
+            }
+
+
+
+
+            sharedPrefManager.storeData(
+                aqi = SharedState.responseObj?.myList?.get(0)?.main?.aqi.toString(),
+                coords = listOf(lat, lon),
+                safety = safety
+                )
+            Log.d("shared_2", sharedPrefManager.getStoredData().all.toString())
+
+        }
         val geofenceHelper = GeofenceHelper(context)
         geofenceHelper.addGeofence("GEOFENCE_1", lat, lon, 1000f)
     }
 }
+
