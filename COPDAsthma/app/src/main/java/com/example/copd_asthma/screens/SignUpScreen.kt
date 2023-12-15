@@ -382,7 +382,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
 //                    )
 
 
-                    val user: Users? = if (listOf(userName, email, userPass, userLungHeath).all { it.isNotBlank() }) {
+                    val user: Users = if (listOf(userName, email, userPass, userLungHeath).all { it.isNotBlank() }) {
                         Users(
                             userName,
                             email,
@@ -390,31 +390,19 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                             userLungHeath
                         )
                     } else {
-                        return@Button
-                    }
-
-                    if (userName.isEmpty()||userPass.isEmpty()|| userPass .isEmpty())
-                    {
                         Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()
                         return@Button
                     }
-                    else
-                    {
-                        isLoading = true
-                        if (user != null) {
-                            signUp(user, context) {callback ->
-                                if (callback) {
-                                    onNavigate()
-                                }
-                                else {
-                                    isLoading = false
-                                }
-                            }
-//                            isLoading = false
+
+                    isLoading = true
+                    signUp(user, context) {success ->
+                        if (success) {
+                            onNavigate()
+                        }
+                        else {
+                            isLoading = false
                         }
                     }
-
-
                 },
                 modifier
                     .padding(top = 30.dp)
