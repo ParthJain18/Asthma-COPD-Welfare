@@ -6,13 +6,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -41,6 +44,9 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
     var email by remember { mutableStateOf("") }
     var userPass by remember { mutableStateOf("") }
     var userLungHeath by remember { mutableStateOf("") }
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
 //    var userAge by remember { mutableStateOf("") }
 //    var packHistory by remember { mutableStateOf("") }
 //    var fev1 by remember { mutableStateOf("") }
@@ -91,7 +97,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                     .fillMaxWidth(),
                 maxLines = 1,
 
-                label = { Text("Full Name") }
+                label = { Text("First Name") }
             )
 
 
@@ -374,6 +380,9 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
 //                            diabetes = userDiabetes,
 //                            hypertension = userHypertension
 //                    )
+
+                    isLoading = true
+
                     val user: Users? = if (listOf(userName, email, userPass, userLungHeath).all { it.isNotBlank() }) {
                         Users(
                             userName,
@@ -398,6 +407,8 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                                     onNavigate()
                                 }
                             }
+                            isLoading = false
+
                         }
                     }
 
@@ -406,12 +417,23 @@ fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty 
                 modifier
                     .padding(top = 30.dp)
                     .width(200.dp)
+                    .height(60.dp)
+                ,
+                enabled = !isLoading
             ) {
-                Text(
+                if (!isLoading) {
+                    Text(
                     text = "Sign up",
                     modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                     fontSize = 20.sp
-                )
+                    )
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .padding(vertical = 5.dp)
+                            .size(27.dp)
+                    )
+                }
             }
 
 

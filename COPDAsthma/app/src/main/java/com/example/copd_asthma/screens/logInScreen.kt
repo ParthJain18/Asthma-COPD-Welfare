@@ -112,6 +112,11 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
         Button(
 
             onClick = {
+                if (userName == "" || userPass == "") {
+                    Toast.makeText(context, "Please enter email and password", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+
                 isLoading = true
                 logIn(userName, userPass, context) {
                     if (it) {
