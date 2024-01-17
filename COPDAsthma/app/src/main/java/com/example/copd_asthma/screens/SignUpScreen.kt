@@ -38,7 +38,7 @@ import com.example.copd_asthma.features.authentication.signUp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(modifier: Modifier = Modifier, errorName:String = "Error Empty Field"  ,onNavigate: () -> Unit) {
+fun SignUpScreen(modifier: Modifier = Modifier  ,onNavigate: () -> Unit) {
 
     var userName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
