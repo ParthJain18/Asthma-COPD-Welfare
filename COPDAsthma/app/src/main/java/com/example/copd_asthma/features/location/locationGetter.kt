@@ -6,7 +6,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.util.Log
 import android.widget.Toast
-import com.example.copd_asthma.features.authentication.SharedPreferencesManager
+import com.example.copd_asthma.features.sharedPreferences.SharedPreferencesManager
 import com.example.copd_asthma.fusedLocationClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices

@@ -37,7 +37,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.copd_asthma.data.airQuality.airQuality
-import com.example.copd_asthma.features.authentication.SharedPreferencesManager
+import com.example.copd_asthma.features.sharedPreferences.SharedPreferencesManager
 import com.example.copd_asthma.features.location.GeofenceHelper
 import com.example.copd_asthma.features.location.GetLocation
 import com.example.copd_asthma.features.location.storeCityNameFromLatLngAsync

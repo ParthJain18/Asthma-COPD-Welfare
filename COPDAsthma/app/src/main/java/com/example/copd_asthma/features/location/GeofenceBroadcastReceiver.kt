@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.copd_asthma.features.authentication.SharedPreferencesManager
+import com.example.copd_asthma.features.sharedPreferences.SharedPreferencesManager
 import com.example.copd_asthma.features.notification.notification
 import com.example.copd_asthma.screens.createGeofenceAt
 import com.google.android.gms.location.Geofence
