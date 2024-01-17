@@ -12,6 +12,7 @@ import com.example.copd_asthma.features.notification.notification
 import com.example.copd_asthma.screens.createGeofenceAt
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
+import com.example.copd_asthma.features.utils.storeData
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
@@ -63,6 +64,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                         createNotification.showNotification()
 
 //                        saveDataToFirestore(context, data)
+                        storeData(data)
 
                     }
 

@@ -12,15 +12,15 @@ import com.example.copd_asthma.R
 
 class notification(
     var context : Context,
-    var title : String,
-    var msg : String
+    private var title : String,
+    private var msg : String
 ) {
 
-    val channelId = "My_channel"
-    val channelName= "My channel name"
-    val notificationManager = context.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    lateinit var notificationChannel: NotificationChannel
-    lateinit var notificationBuilder: NotificationCompat.Builder
+    private val channelId = "My_channel"
+    private val channelName= "My channel name"
+    private val notificationManager = context.applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private lateinit var notificationChannel: NotificationChannel
+    private lateinit var notificationBuilder: NotificationCompat.Builder
 
     fun showNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){

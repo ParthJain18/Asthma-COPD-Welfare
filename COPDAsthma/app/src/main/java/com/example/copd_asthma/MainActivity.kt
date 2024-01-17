@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.copd_asthma.screens.LogInScreen
 import com.example.copd_asthma.screens.NavBar
+import com.example.copd_asthma.screens.QuestionnaireScreen
 import com.example.copd_asthma.screens.SignUpScreen
 import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
 
@@ -50,6 +51,12 @@ fun AppNavigator() {
         }
         composable("SignUpScreen") {
             SignUpScreen (onNavigate = {
+                navController.popBackStack()
+                navController.navigate("questionnaire")
+            })
+        }
+        composable("questionnaire") {
+            QuestionnaireScreen(onNavigate = {
                 navController.popBackStack()
                 navController.navigate("navbar")
             })

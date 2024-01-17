@@ -44,7 +44,12 @@ fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
                     ?.addOnCompleteListener { profileUpdateTask ->
                         if (profileUpdateTask.isSuccessful) {
                             db.collection("users").document(user.uid)
-                                .set(mapOf("severity" to userObj.userLungHealth))
+                                .set(mapOf(
+                                    "severity" to userObj.userLungHealth,
+                                    "userId" to user.uid,
+                                    "name" to userObj.name,
+                                    "email" to userObj.email
+                                ))
                                 .addOnSuccessListener {
                                     Log.d(TAG, "User profile and metadata updated.")
                                     val sharedPrefManager = SharedPreferencesManager(context)
