@@ -39,7 +39,6 @@ fun QuestionnaireScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit, )
     ) {
 
         Column(
-
             modifier
                 .padding(all = 10.dp)
                 .verticalScroll(rememberScrollState()),

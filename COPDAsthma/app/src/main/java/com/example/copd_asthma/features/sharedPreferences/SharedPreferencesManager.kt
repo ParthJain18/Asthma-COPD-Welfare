@@ -1,4 +1,4 @@
-package com.example.copd_asthma.features.authentication
+package com.example.copd_asthma.features.sharedPreferences
 
 import android.content.Context
 import android.content.SharedPreferences

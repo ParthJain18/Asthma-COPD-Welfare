@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.copd_asthma.data.Users
+import com.example.copd_asthma.features.sharedPreferences.SharedPreferencesManager
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
