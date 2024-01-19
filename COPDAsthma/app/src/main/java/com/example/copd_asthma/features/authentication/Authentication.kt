@@ -46,7 +46,7 @@ fun signUp(userObj: Users, context: Context, callback: (Boolean) -> Unit) {
                         if (profileUpdateTask.isSuccessful) {
                             db.collection("users").document(user.uid)
                                 .set(mapOf(
-                                    "severity" to userObj.userLungHealth,
+                                    "severity" to userObj.severity,
                                     "userId" to user.uid,
                                     "name" to userObj.name,
                                     "email" to userObj.email

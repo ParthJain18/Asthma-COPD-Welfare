@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.copd_asthma.R
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @Composable
@@ -63,7 +65,7 @@ fun Welcome(name: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 26.dp, start = 20.dp, end = 20.dp)
+            .padding(top = 26.dp, bottom = 15.dp, start = 20.dp, end = 20.dp)
             .heightIn(min = 100.dp)
             .clip(RoundedCornerShape(8.dp))
             .shadow(
@@ -298,8 +300,54 @@ fun AlertBox() {
     }
 }
 
+
+@Composable
+fun LabeledSlider(
+    value: Float,
+    onValueChange: (Float) -> Unit
+) {
+    val labels = listOf("Very\nTrue", "True", "Maybe\nTrue", "Maybe\nFalse", "False", "Very\nFalse")
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            for (i in 0..5) {
+                Text(
+                    text = labels[i],
+                    fontSize = 12.sp,
+                    modifier = Modifier.weight(1f)
+                        .align(Alignment.CenterVertically),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+
+        Slider(
+            value = value,
+            onValueChange = { newValue ->
+                onValueChange(newValue)
+            },
+            valueRange = 0f..5f,
+            steps = 4,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 2.dp, horizontal = 16.dp)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun Preview2() {
-    AlertBox()
+    LabeledSlider(
+        value = 2.0f,
+        onValueChange = { }
+    )
 }

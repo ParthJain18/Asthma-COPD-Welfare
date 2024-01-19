@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -225,6 +226,8 @@ fun HomeScreen(padding: PaddingValues) {
 
                 }
             }
+            Spacer(modifier = Modifier.heightIn(20.dp))
+
         }
         Card(
             modifier = Modifier
@@ -261,10 +264,10 @@ fun HomeScreen(padding: PaddingValues) {
 
             Box(modifier = Modifier.padding(start = 30.dp)) {
                 val color: Color = when (sever) {
-                    "Healthy" -> Color(25, 179, 103, 255)
+                    "Mild" -> Color(25, 179, 103, 255)
                     "Moderate" -> Color(255, 170, 51)
-                    "Unhealthy" -> Color(255, 87, 51, 228)
-//                    "Very Severe" -> Color(210, 4, 45)
+                    "Severe" -> Color(255, 87, 51, 228)
+                    "Very Severe" -> Color(210, 4, 45)
 
                     else -> {
                         Color.Black
@@ -280,13 +283,15 @@ fun HomeScreen(padding: PaddingValues) {
                     )
                 }
             }
+            Spacer(modifier = Modifier.heightIn(20.dp))
+
         }
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 15.dp, start = 20.dp, end = 20.dp)
-                .heightIn(min = 100.dp)
+                .heightIn(min = 60.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .shadow(
                     elevation = 3.dp,
@@ -305,8 +310,9 @@ fun HomeScreen(padding: PaddingValues) {
                 ),
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
+
             Box(modifier = Modifier
-                .padding(start = 30.dp, top = 25.dp, bottom = 10.dp)
+                .padding(start = 30.dp, top = 15.dp)
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = {
@@ -316,7 +322,10 @@ fun HomeScreen(padding: PaddingValues) {
                 },
                 contentAlignment = Alignment.Center
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                    ) {
                     HeadingText(
                         text1 = "Show Air Components  ",
                         size = 19.sp,

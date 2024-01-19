@@ -122,45 +122,37 @@ fun SignUpScreen(modifier: Modifier = Modifier  ,onNavigate: () -> Unit) {
                 visualTransformation = PasswordVisualTransformation()
 
             )
-            Text(
-                text = "Your Lung Health:",
-                modifier
-                    .padding(start = 15.dp, end = 10.dp, top = 10.dp)
-                    .fillMaxWidth(),
-                fontSize = 21.sp,
-                textAlign = TextAlign.Left
-            )
 
-            val lungHealth = listOf("Healthy", "Moderate", "Unhealthy")
-            val (selected, onOptionSelect) = remember { mutableStateOf("") }
-            Column {
-                lungHealth.forEach { text ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .selectable(
-                                selected = (text == selected),
-                                onClick = {
-                                    onOptionSelect(text)
-                                    userLungHeath = text
-
-                                }
-                            )
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-
-                    ) {
-                        RadioButton(
-                            selected = (text == selected),
-                            onClick = { onOptionSelect(text) }
-                        )
-                        Text(
-                            text = text,
-                            modifier = Modifier.padding(start = 16.dp)
-                        )
-                    }
-                }
-            }
+//            val lungHealth = listOf("Healthy", "Moderate", "Unhealthy")
+//            val (selected, onOptionSelect) = remember { mutableStateOf("") }
+//            Column {
+//                lungHealth.forEach { text ->
+//                    Row(
+//                        Modifier
+//                            .fillMaxWidth()
+//                            .selectable(
+//                                selected = (text == selected),
+//                                onClick = {
+//                                    onOptionSelect(text)
+//                                    userLungHeath = text
+//
+//                                }
+//                            )
+//                            .padding(horizontal = 16.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//
+//                    ) {
+//                        RadioButton(
+//                            selected = (text == selected),
+//                            onClick = { onOptionSelect(text) }
+//                        )
+//                        Text(
+//                            text = text,
+//                            modifier = Modifier.padding(start = 16.dp)
+//                        )
+//                    }
+//                }
+//            }
 //
 //            TextField(
 //                value = userAge.trim(),
@@ -382,12 +374,11 @@ fun SignUpScreen(modifier: Modifier = Modifier  ,onNavigate: () -> Unit) {
 //                    )
 
 
-                    val user: Users = if (listOf(userName, email, userPass, userLungHeath).all { it.isNotBlank() }) {
+                    val user: Users = if (listOf(userName, email, userPass).all { it.isNotBlank() }) {
                         Users(
                             userName,
                             email,
-                            userPass,
-                            userLungHeath
+                            userPass
                         )
                     } else {
                         Toast.makeText(context, "Please make sure that no fields are empty", Toast.LENGTH_LONG).show()

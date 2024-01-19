@@ -45,6 +45,7 @@ class SharedPreferencesManager(private val context: Context) {
 
         val TAG = "syncData"
         var severity: String? = null
+        var catScore: String? = null
 
 
         user?.uid?.let {
@@ -56,6 +57,7 @@ class SharedPreferencesManager(private val context: Context) {
                         Log.d(TAG, "${documentSnapshot.id} => ${documentSnapshot.data}")
                         // Access the data using documentSnapshot.data
                         severity = documentSnapshot.data?.get("severity").toString()
+                        catScore = documentSnapshot.data?.get("catScore").toString()
 
                         val editor = sharedPreferences.edit()
 
@@ -63,6 +65,7 @@ class SharedPreferencesManager(private val context: Context) {
                         editor.putString("displayName", user.displayName)
                         editor.putString("email", user.email)
                         editor.putString("severity", severity.toString())
+                        editor.putString("catScore", catScore.toString())
                         // Add any other user-related data you want to store
 
                         editor.apply()
@@ -80,6 +83,7 @@ class SharedPreferencesManager(private val context: Context) {
     fun storeData(uid: String? = null,
                   email: String? = null,
                   severity: String? = null,
+                  catScore: String? = null,
                   coords: List<Double>? = null,
                   city: String? = null,
                   aqi: String? = null,
@@ -91,6 +95,7 @@ class SharedPreferencesManager(private val context: Context) {
         editor.putString("uid", uid ?: dataSharedPref.getString("uid", ""))
         editor.putString("email", email ?: dataSharedPref.getString("email", ""))
         editor.putString("severity", severity ?: dataSharedPref.getString("severity", ""))
+        editor.putString("catScore", catScore ?: dataSharedPref.getString("catScore", ""))
         editor.putString("city", city ?: dataSharedPref.getString("city", ""))
         editor.putString("aqi", aqi ?: dataSharedPref.getString("aqi", ""))
         editor.putString("lat", coords?.getOrNull(0)?.toString() ?: dataSharedPref.getString("lat", ""))
