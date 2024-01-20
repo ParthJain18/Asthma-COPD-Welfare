@@ -106,7 +106,7 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
                 fontSize = 25.sp,
                 textAlign = TextAlign.Left
             )
-            val severityList = listOf("Healthy", "Moderate", "Unhealthy")
+            val severityList = listOf("Mild", "Moderate", "Severe", "Very Severe")
             val (severitySelect, onSeveritySelect) = remember { mutableStateOf(userSeverity) }
             Column {
                 severityList.forEach { text ->
