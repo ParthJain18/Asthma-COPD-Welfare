@@ -7,7 +7,7 @@ data class Users(
     val name: String,
     val email: String,
     val password: String,
-    val severity: String = "Healthy",
+    val severity: String = "Low",
     val catScore: String = "Not taken Yet",
 //    val age: Int,
 //    val packHistory: Int,

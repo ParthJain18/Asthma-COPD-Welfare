@@ -36,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.copd_asthma.R
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 @Composable
@@ -108,6 +107,7 @@ fun Welcome(name: String) {
                             .fillMaxSize()
                     )
                 }
+                Spacer(modifier = Modifier.heightIn(10.dp))
             }
             Spacer(modifier = Modifier.heightIn(18.dp))
             ColoredText(
@@ -312,22 +312,7 @@ fun LabeledSlider(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            for (i in 0..5) {
-                Text(
-                    text = labels[i],
-                    fontSize = 12.sp,
-                    modifier = Modifier.weight(1f)
-                        .align(Alignment.CenterVertically),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
+
 
         Slider(
             value = value,
@@ -340,6 +325,23 @@ fun LabeledSlider(
                 .fillMaxWidth()
                 .padding(vertical = 2.dp, horizontal = 16.dp)
         )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            for (i in 0..5) {
+                Text(
+                    text = labels[i],
+                    fontSize = 12.sp,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center,
+                    fontWeight = if (i == value.toInt()) FontWeight.Bold else FontWeight.Normal,
+                    lineHeight = 13.sp
+                )
+            }
+        }
     }
 }
 

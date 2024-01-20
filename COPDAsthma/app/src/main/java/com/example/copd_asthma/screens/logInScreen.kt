@@ -152,19 +152,26 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
             modifier
                 .padding( top = 7.dp)
                 .clickable(onClick = {
-                    auth.sendPasswordResetEmail(userName)
-                    Toast.makeText(context, "Password reset email sent", Toast.LENGTH_SHORT).show()
+                    if (userName == "") {
+                        Toast.makeText(context, "Please enter email", Toast.LENGTH_SHORT).show()
+                        return@clickable
+                    }
+                    else {
+                        auth.sendPasswordResetEmail(userName)
+                        Toast.makeText(context, "Password reset email sent", Toast.LENGTH_SHORT).show()
+
+                    }
                 })
 
             ,
             fontSize = 14.sp,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.weight(1f))
+//        Spacer(modifier = Modifier.weight(1f))
 
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
+            contentAlignment = Alignment.TopCenter
 
         ) {
             Text(
@@ -172,7 +179,7 @@ fun LogInScreen(modifier: Modifier = Modifier, onLogIn: () -> Unit, onSignUp: ()
                 modifier
                     .padding(top = 20.dp)
                     .clickable { onSignUp() },
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 textAlign = TextAlign.Center
             )
         }
