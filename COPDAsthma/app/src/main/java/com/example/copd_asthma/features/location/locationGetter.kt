@@ -35,10 +35,6 @@ fun GetLocation(context: Context, onLocationReceived: (Double, Double) -> Unit) 
                 onLocationReceived(location.latitude, location.longitude)
             }
         }
-
-
-
-
 }
 
 

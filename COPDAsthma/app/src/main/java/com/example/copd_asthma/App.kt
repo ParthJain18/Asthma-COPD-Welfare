@@ -73,16 +73,11 @@ class App : Application() {
                         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
 
-                        if (user != null) {
-                            editor.putString("uid", user.uid)
-                            editor.putString("displayName", user.displayName)
-                            editor.putString("email", user.email)
-                            editor.putString("severity", severity.toString())
-                            // Add any other user-related data you want to store
-                        } else {
-                            // Clear SharedPreferences if there is no user
-                            editor.clear()
-                        }
+                        editor.putString("uid", user.uid)
+                        editor.putString("displayName", user.displayName)
+                        editor.putString("email", user.email)
+                        editor.putString("severity", severity.toString())
+                        // Add any other user-related data you want to store
 
                         editor.apply()
 
