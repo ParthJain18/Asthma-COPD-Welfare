@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.copd_asthma.features.periodic_function.schedulePeriodicWork
 
 
 var startingScreen: String = ""
@@ -39,6 +40,9 @@ class App : Application() {
 //        val currentUser : ParseUser? = ParseUser.getCurrentUser()
         val currentUser = auth.currentUser
         saveUserDataToSharedPreferences(currentUser)
+
+        // Run periodic function
+         schedulePeriodicWork(this)
 
 
         startingScreen = if (currentUser == null) {
