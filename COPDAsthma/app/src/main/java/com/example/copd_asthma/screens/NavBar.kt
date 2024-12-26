@@ -263,7 +263,17 @@ fun NavBar(onLogOut: ()-> Unit) {
             composable("home"
             ) { HomeScreen(padding) }
             composable("settings"
-            ) { SettingScreen(padding) }
+            ) { SettingScreen(
+                padding,
+                onQuestionnaire = { navController.navigate("questionnaire") },
+                onPredictionModel = { navController.navigate("prediction") }
+//                onPredictionModel = { navController.navigate("prediction") }
+            ) }
+            composable("questionnaire"
+            ) { QuestionnaireScreen(onNavigate = { navController.navigate("settings")}) }
+
+            composable("prediction"
+            ) { PredictionScreen(onNavigate = { navController.navigate("settings") }) }
 //            composable("profile"
 //            ) { ProfileScreen(padding) }
         }

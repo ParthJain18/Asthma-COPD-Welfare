@@ -12,13 +12,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,43 +38,42 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.copd_asthma.features.sharedPreferences.SharedPreferencesManager
 
 @Composable
-fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
-
+fun SettingScreen(
+    padding: PaddingValues,
+    modifier: Modifier = Modifier,
+    onQuestionnaire: () -> Unit = {},
+    onPredictionModel: () -> Unit = {}
+) {
     val sharedPrefManager = SharedPreferencesManager(LocalContext.current)
     val settings = sharedPrefManager.getSettings().all
     val severity = sharedPrefManager.getUserData().getString("severity", "Healthy")
     var userSeverity by remember { mutableStateOf(severity ?: "Healthy") }
     Log.d("radius", settings["radius"].toString())
     var userGeoFenceRadius by remember {
-        mutableStateOf(settings["radius"].toString().takeIf { it != "null"} ?: "3 Kms")
+        mutableStateOf(settings["radius"].toString().takeIf { it != "null" } ?: "3 Kms")
     }
 
-
     Column(
-
         modifier
-            .padding(all = 10.dp)
+            .padding(padding)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-
-        )
+    )
     {
-
-
         Text(
-            text = "Settings",
+            text = "Menu",
             modifier
                 .padding(start = 15.dp, end = 10.dp, top = 10.dp)
                 .fillMaxWidth(),
             fontSize = 30.sp,
             textAlign = TextAlign.Center
-
         )
         Spacer(
             modifier.heightIn(50.dp)
@@ -78,6 +82,100 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 15.dp, start = 10.dp, end = 10.dp)
+                .heightIn(min = 60.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .shadow(
+                    elevation = 3.dp,
+                    spotColor = Color(0x26000000),
+                    ambientColor = Color(0x26000000)
+                )
+                .shadow(
+                    elevation = 2.dp,
+                    spotColor = Color(0x4D000000),
+                    ambientColor = Color(0x4D000000)
+                )
+                .border(
+                    width = 1.dp,
+                    color = Color(0xFFDCDCDC),
+                    shape = RoundedCornerShape(size = 16.dp)
+                ),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Take CAT test",
+                    modifier = Modifier
+                        .padding(all = 15.dp)
+                        .weight(1f),
+                    fontSize = 25.sp,
+                    textAlign = TextAlign.Left
+                )
+                IconButton(
+                    onClick = { onQuestionnaire() },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = "Right Arrow",
+                        tint = Color(0xFF000000),
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp, start = 10.dp, end = 10.dp)
+                .heightIn(min = 60.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .shadow(
+                    elevation = 3.dp,
+                    spotColor = Color(0x26000000),
+                    ambientColor = Color(0x26000000)
+                )
+                .shadow(
+                    elevation = 2.dp,
+                    spotColor = Color(0x4D000000),
+                    ambientColor = Color(0x4D000000)
+                )
+                .border(
+                    width = 1.dp,
+                    color = Color(0xFFDCDCDC),
+                    shape = RoundedCornerShape(size = 16.dp)
+                ),
+            colors = CardDefaults.cardColors(containerColor = Color.White)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Use Prediction model",
+                    modifier = Modifier
+                        .padding(all = 15.dp)
+                        .weight(1f),
+                    fontSize = 25.sp,
+                    textAlign = TextAlign.Left
+                )
+                IconButton(
+                    onClick = { onPredictionModel() },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = "Right Arrow",
+                        tint = Color(0xFF000000),
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+        }
+        Card(
+            modifier = Modifier
                 .padding(top = 15.dp, start = 10.dp, end = 10.dp)
                 .heightIn(min = 100.dp)
                 .clip(RoundedCornerShape(8.dp))
@@ -137,7 +235,6 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
                 }
 
             }
-
         }
 
         Card(
@@ -161,7 +258,6 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
                     color = Color(0xFFDCDCDC),
                     shape = RoundedCornerShape(size = 16.dp)
                 ),
-
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Text(
@@ -214,11 +310,12 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         ) {
-
-
             Button(
                 onClick = {
-                    sharedPrefManager.setSettings(severity = userSeverity, radius = userGeoFenceRadius)
+                    sharedPrefManager.setSettings(
+                        severity = userSeverity,
+                        radius = userGeoFenceRadius
+                    )
                 },
                 modifier = Modifier
                     .height(50.dp)
@@ -234,4 +331,11 @@ fun SettingScreen(padding: PaddingValues,modifier: Modifier = Modifier) {
         modifier.heightIn(50.dp)
     )
 
+}
+
+
+@Preview
+@Composable
+fun SettingScreenPreview() {
+    SettingScreen(padding = PaddingValues(0.dp))
 }

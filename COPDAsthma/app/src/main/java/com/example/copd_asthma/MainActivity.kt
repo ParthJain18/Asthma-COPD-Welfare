@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.copd_asthma.screens.LogInScreen
 import com.example.copd_asthma.screens.NavBar
+import com.example.copd_asthma.screens.PredictionScreen
 import com.example.copd_asthma.screens.QuestionnaireScreen
 import com.example.copd_asthma.screens.SignUpScreen
 import com.example.copd_asthma.ui.theme.COPDAsthmaTheme
@@ -55,6 +56,13 @@ fun AppNavigator() {
                 navController.navigate("questionnaire")
             })
         }
+        composable("prediction") {
+            PredictionScreen( onNavigate = {
+                navController.popBackStack()
+                navController.navigate("navbar")
+            })
+        }
+
         composable("questionnaire") {
             QuestionnaireScreen(onNavigate = {
                 navController.popBackStack()
@@ -76,11 +84,3 @@ fun AppNavigator() {
 
 
 
-
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-}

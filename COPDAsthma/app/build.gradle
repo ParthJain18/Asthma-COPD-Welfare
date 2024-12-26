@@ -88,4 +88,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
     implementation("com.google.firebase:firebase-firestore:24.9.1")
 
+    implementation 'org.tensorflow:tensorflow-lite:2.9.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.3.1'
+
+
 }

@@ -153,11 +153,6 @@ fun HomeScreen(padding: PaddingValues) {
         if (name != null) {
             Welcome(name)
         }
-//        if (fev1 != null && fvc != null) {
-//            FevCard(fev1, fvc)
-//        }
-
-
 
         Card(
             modifier = Modifier
@@ -180,7 +175,6 @@ fun HomeScreen(padding: PaddingValues) {
                     color = Color(0xFFDCDCDC),
                     shape = RoundedCornerShape(size = 16.dp)
                 ),
-
             colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Box(modifier = Modifier.padding(start = 25.dp, top = 20.dp, bottom = 10.dp)) {

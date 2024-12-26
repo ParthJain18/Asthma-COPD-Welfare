@@ -45,7 +45,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.copd_asthma.features.utils.storeSeverity
 
 @Composable
-fun QuestionnaireScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit, ) {
+fun QuestionnaireScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit = {}, ) {
 
     val showDialog = remember { mutableStateOf(false) }
     val showScoreDialog = remember { mutableStateOf(false) }
@@ -427,7 +427,7 @@ fun QuestionnaireScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit, )
                     showScoreDialog.value = true
                 },
                 modifier
-                    .padding(top = 30.dp)
+                    .padding(top = 30.dp, bottom = 100.dp)
                     .width(200.dp)
                     .height(60.dp)
                     .align(Alignment.CenterHorizontally)
