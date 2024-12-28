@@ -444,7 +444,7 @@ fun QuestionnaireScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit = 
 }
 
 @Composable
-fun HelperDialog(onDismissRequest: () -> Unit){
+private fun HelperDialog(onDismissRequest: () -> Unit){
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier
@@ -477,7 +477,7 @@ fun HelperDialog(onDismissRequest: () -> Unit){
 }
 
 @Composable
-fun ScoreDialog(CAT_score: Int, onDismissRequest: () -> Unit){
+private fun ScoreDialog(CAT_score: Int, onDismissRequest: () -> Unit){
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier

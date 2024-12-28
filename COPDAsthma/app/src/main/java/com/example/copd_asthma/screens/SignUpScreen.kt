@@ -388,6 +388,7 @@ fun SignUpScreen(modifier: Modifier = Modifier, onNavigate: () -> Unit) {
                     isLoading = true
                     signUp(user, context) {success ->
                         if (success) {
+                            //TODO
                             onNavigate()
                         }
                         else {

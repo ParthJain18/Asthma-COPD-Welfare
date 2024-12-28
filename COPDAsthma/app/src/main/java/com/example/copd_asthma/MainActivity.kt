@@ -53,7 +53,7 @@ fun AppNavigator() {
         composable("SignUpScreen") {
             SignUpScreen (onNavigate = {
                 navController.popBackStack()
-                navController.navigate("questionnaire")
+                navController.navigate("prediction")
             })
         }
         composable("prediction") {
